@@ -7,6 +7,20 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float flySpeed = 10.0f;
     [SerializeField] private float rotationSensitivity = 2.0f;
 
+    public static CameraController Instance;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         HideAndLockCursor();
@@ -43,14 +57,6 @@ public class CameraController : MonoBehaviour
         return new Vector3(-rotationVertical * rotationSensitivity, rotationHorizontal * rotationSensitivity, 0.0f);
     }
 
-    private bool IsAboveWaterSurface()
-    {
-        //gets the Water Surface Layer.
-        int waterSurfaceLayerMask = 1 << 9;
-
-        return Physics.Raycast(transform.position, -Vector3.up, out RaycastHit hit, waterSurfaceLayerMask);
-    }
-
     void HideAndLockCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -61,5 +67,27 @@ public class CameraController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+    public LivingEntity DetectEntity()
+    {
+        const float castDist = 3.0f;
+
+        RaycastHit hit;
+        LivingEntity entity = null;
+
+        if (Physics.Raycast(transform.position, transform.forward, out hit, castDist))
+        {
+            entity = hit.transform.GetComponent<LivingEntity>();
+
+            if (entity)
+            {
+                UIManager.Instance.SetInformationPanelActive(true);
+                return entity;
+            }
+        }
+
+        UIManager.Instance.SetInformationPanelActive(false);
+        return null;
     }
 }

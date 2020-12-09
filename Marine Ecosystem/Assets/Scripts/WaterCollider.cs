@@ -8,7 +8,7 @@ public class WaterCollider : MonoBehaviour
     private BoxCollider boxCollider;
     private WaterPlaneGenerator waterSurface;
 
-    private int waterDepth = 64;
+    private int waterDepth = 20;
 
     private void Start()
     {
@@ -33,6 +33,15 @@ public class WaterCollider : MonoBehaviour
         {
             if(waterSurface) waterSurface.FlipPlane(1);
             PostProcessController.Instance.SetPostProcessProfile(PostProcessController.Instance.aboveWater);
+        }
+
+        //turns sea creature around if leaving area.
+
+        Consumer consumer = other.gameObject.GetComponent<Consumer>();
+
+        if (consumer)
+        {
+            consumer.moveDirection *= -1;
         }
     }
 
