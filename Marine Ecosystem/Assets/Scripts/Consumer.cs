@@ -26,14 +26,25 @@ public class Consumer : LivingEntity
 
     protected LivingEntity foodTarget;
 
+    protected ConsumerSettings consumerSettings;
+
+    protected bool isMature = false;
+
     protected override void Init()
     {
         base.Init();
+
+        if (Gender == Gender.Male) entityName = settings.GetRandomMaleName();
+        else if (Gender == Gender.Female) entityName = settings.GetRandomFemaleName();
+        else entityName = null;
+
+        consumerSettings = (ConsumerSettings)settings;
+        transform.localScale = consumerSettings.ScaleAtBirth;
+        StartCoroutine(GrowRoutine());
     }
 
     protected override void Update()
     {
-
         base.Update();
 
         float timeSinceLastActionChoice = Time.time - lastActionChooseTime;
@@ -45,9 +56,9 @@ public class Consumer : LivingEntity
 
         hunger += Time.deltaTime * 1 / timeUntilDeathByHunger;
 
-        if (hunger >= 1)
+        if (hunger >= 1f)
         {
-            Die(CauseOfDeath.Hunger);
+            //Die(CauseOfDeath.Hunger);
         }
 
         transform.position += moveDirection.normalized * moveSpeed * Time.deltaTime;
@@ -58,20 +69,13 @@ public class Consumer : LivingEntity
 
     protected virtual void ChooseNextAction()
     {
-        /*lastActionChooseTime = Time.time;
-
-        bool currentlyEating = currentAction == CreatureAction.Eating && foodTarget && hunger > 0;
-        if (hunger >= criticalPercent || currentlyEating) {
-            SearchForFood();
-        }*/
-
-        //currentAction = CreatureAction.EscapingPredator;
-
         Act();
     }
 
     protected virtual void Act()
     {
+        currentAction = CreatureAction.Socialising;
+
         switch(currentAction)
         {
             case CreatureAction.GoingToFood:
@@ -113,6 +117,54 @@ public class Consumer : LivingEntity
                 hunger -= eatAmount;
             }
         }
+    }
+
+    protected override void Die(CauseOfDeath cause)
+    {
+        if(!dead)
+        {
+            StartCoroutine(DieRoutine());
+        }
+
+        base.Die(cause);
+    }
+
+    protected IEnumerator DieRoutine()
+    {
+        var anim = GetComponent<Animator>();
+
+        if(anim)
+        {
+            anim.SetTrigger("die");
+        }
+
+        Vector3 waterSurface = new Vector3(transform.position.x, 0.5f, transform.position.z);
+
+        float randNum = Random.Range(0.0f, 1.0f);
+
+        while (transform.position.y < waterSurface.y)
+        {
+
+            transform.position = Vector3.MoveTowards(transform.position, waterSurface, Time.deltaTime * 0.5f);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(5f);
+
+        StartCoroutine(FadeOutRoutine());
+    }
+
+    protected IEnumerator GrowRoutine()
+    {
+        float diff = 1.0f - consumerSettings.sizeAtBirth;
+
+        while (age < consumerSettings.maturityAge && !dead)
+        {
+            transform.localScale = consumerSettings.ScaleAtBirth + (Vector3.one * (age / consumerSettings.maturityAge) * diff);
+            yield return null;
+        }
+
+        isMature = true;
     }
 
     protected virtual void EscapeFromPredator()

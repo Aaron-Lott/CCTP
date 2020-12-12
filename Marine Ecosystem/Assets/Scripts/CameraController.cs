@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(FreeCamera), typeof(OrbitCamera))]
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private float flySpeed = 10.0f;
-    [SerializeField] private float rotationSensitivity = 2.0f;
-
     public static CameraController Instance;
+
+    private FreeCamera freeCam;
+    private OrbitCamera orbitCam;
+
+    private LivingEntity selectedEntity;
+
+    private bool orbitCamEnabled = false;
 
     private void Awake()
     {
@@ -23,38 +28,28 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
+        freeCam = GetComponent<FreeCamera>();
+        orbitCam = GetComponent<OrbitCamera>();
+
         HideAndLockCursor();
+        SetOrbitCamera(false);
     }
 
-    void LateUpdate()
+    private void LateUpdate()
     {
-        transform.position += MoveVector(flySpeed);
+        if (orbitCamEnabled && Input.GetButtonDown("Fire2"))
+        {
+            selectedEntity = null;
 
-        transform.eulerAngles += RotationVectorMouse(rotationSensitivity);
+            SetOrbitCamera(false);
+            orbitCamEnabled = false;
+        }
     }
 
-    private Vector3 MoveVector(float speed)
+    private void SetOrbitCamera(bool orbitCamActive)
     {
-        float moveHorizontal = Input.GetAxisRaw("Horizontal");
-        float moveVertical = Input.GetAxisRaw("Vertical");
-
-        return (transform.forward * moveVertical + transform.right * moveHorizontal) * speed * Time.deltaTime;
-    }
-
-    private Vector3 RotationVectorMouse(float sensitivity)
-    {
-        float rotationHorizontal = Input.GetAxis("Mouse X");
-        float rotationVertical = Input.GetAxis("Mouse Y");
-
-        return new Vector3(-rotationVertical * rotationSensitivity, rotationHorizontal * rotationSensitivity, 0.0f);
-    }
-
-    private Vector3 RotationVectorJoyStick(float sensitivity)
-    {
-        float rotationHorizontal = Input.GetAxis("RightStick X");
-        float rotationVertical = Input.GetAxis("RightStick Y");
-
-        return new Vector3(-rotationVertical * rotationSensitivity, rotationHorizontal * rotationSensitivity, 0.0f);
+        freeCam.enabled = !orbitCamActive;
+        orbitCam.enabled = orbitCamActive;
     }
 
     void HideAndLockCursor()
@@ -71,23 +66,35 @@ public class CameraController : MonoBehaviour
 
     public LivingEntity DetectEntity()
     {
-        const float castDist = 3.0f;
+        float castDist = orbitCam.maxDistance;
 
         RaycastHit hit;
-        LivingEntity entity = null;
 
         if (Physics.Raycast(transform.position, transform.forward, out hit, castDist))
         {
-            entity = hit.transform.GetComponent<LivingEntity>();
+            LivingEntity entity = hit.transform.GetComponent<LivingEntity>();
 
-            if (entity)
+            if (entity && !entity.Dead)
             {
                 UIManager.Instance.SetInformationPanelActive(true);
+
+                if (!orbitCamEnabled && Input.GetButtonDown("Fire1"))
+                {
+                    selectedEntity = entity;
+
+                    SetOrbitCamera(true);
+                    orbitCam.SetFocus(entity.transform, entity.orbitCamViewOffset);
+                    orbitCamEnabled = true;
+                }
+
+                if (selectedEntity) return selectedEntity;
+
                 return entity;
             }
         }
 
         UIManager.Instance.SetInformationPanelActive(false);
+        
         return null;
-    }
+    } 
 }

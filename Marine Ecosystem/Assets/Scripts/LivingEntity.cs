@@ -4,23 +4,43 @@ using UnityEngine;
 
 public class LivingEntity : MonoBehaviour
 {
-    public Species species;
+    public Species Species { get { return settings.species; } }
+
+    public Gender Gender { get { return settings.gender; } }
 
     protected bool dead;
 
-    protected int timeScale = 60;
+    protected int timeScale = 60; // 1 year = 1 minute
+    protected float elapsedTime = 0;
 
     protected float age = 0;
-    protected int ageInYears = 0;
-    public int lifeSpan = 5;
 
-    //External file data.
-    JSONReader jsonReader;
+    protected float lifeSpan;
 
-    string speciesText;
-    string knownAsText;
-    string factText;
-    string nameText;
+    public Vector3 orbitCamViewOffset = Vector3.zero;
+
+    [Range(0.0f, 1.0f)]
+    protected float health = 1.0f;
+
+    protected string entityName = null;
+
+    
+    [SerializeField] protected LivingEntitySettings settings = null;
+
+    public bool Dead { get { return dead; } }
+
+    public float Age { get { return age; } }
+
+    public int MaxLifeSpan { get { return settings.lifeSpan.y; } }
+    public int MinLifeSpan { get { return settings.lifeSpan.x; } }
+
+    public float Health {get { return health;  } }
+
+    public string ScientificName { get { return settings.scientificSpecies; } }
+
+    public string Fact { get { return settings.fact; } }
+
+    public string RandomName {get { return entityName; } }
 
     private void Start()
     {
@@ -29,46 +49,18 @@ public class LivingEntity : MonoBehaviour
 
     protected virtual void Init()
     {
-        JSONReader jsonReader = FindObjectOfType<JSONReader>();
-
-        if(jsonReader)
-        {
-            speciesText = jsonReader.GetLivingEntityData(species).species;
-            knownAsText = jsonReader.GetLivingEntityData(species).knownAs;
-            factText = jsonReader.GetLivingEntityData(species).fact;
-            nameText = jsonReader.GetRandomName();
-        }
+        lifeSpan = settings.GetLifeSpan();
     }
 
     protected virtual void Update()
     {
-        age += Time.deltaTime;
+        SimulateAge();
 
-        ageInYears = Mathf.FloorToInt(age / timeScale); // 1 year = 1 minute
+        health = (1.0f - age / MaxLifeSpan);
 
-        if (ageInYears >= lifeSpan)
+        if(DisplayInformationPanel())
         {
-            Die(CauseOfDeath.Age);
-        }
-
-        DisplayInformationPanel();
-    }
-
-    protected virtual void Die(CauseOfDeath cause)
-    {
-        if (!dead)
-        {
-            dead = true;
-            //Destroy(gameObject);
-        }
-    }
-
-    public void DisplayInformationPanel()
-    {
-        if(CameraController.Instance.DetectEntity() == this)
-        {
-            UIManager.Instance.UpdateInformationPanel(speciesText,
-                ageInYears >= 1 ? ageInYears + " years" : Mathf.FloorToInt(age / (timeScale / 12)) + " months", knownAsText, nameText, factText);
+            UIManager.Instance.UpdateInformationPanel(this);
 
             SetShaderOutline(0.04f);
         }
@@ -76,6 +68,38 @@ public class LivingEntity : MonoBehaviour
         {
             SetShaderOutline(0.0f);
         }
+    }
+
+    public virtual bool SimulateAge()
+    {
+        elapsedTime += Time.deltaTime;
+
+        age = elapsedTime / timeScale;
+
+        if (age >= lifeSpan)
+        {
+            Die(CauseOfDeath.Age);
+        }
+
+        return true;
+    }
+
+    protected virtual void Die(CauseOfDeath cause)
+    {
+        if (!dead)
+        {
+            dead = true;
+        }
+    }
+
+    public bool DisplayInformationPanel()
+    {
+        if(CameraController.Instance.DetectEntity() == this)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public void SetShaderOutline(float value)
@@ -86,5 +110,25 @@ public class LivingEntity : MonoBehaviour
         {
             renderer.sharedMaterial.SetFloat("_FirstOutlineWidth", value);
         }
+    }
+
+    protected IEnumerator FadeOutRoutine()
+    {
+        Renderer rend = GetComponentInChildren<Renderer>();
+
+        if(rend)
+        {
+            rend.material.shader = Shader.Find("Transparent/Diffuse");
+
+            while(rend.material.color.a > 0.0f)
+            {
+                float alpha = rend.material.color.a;
+                Color newColor = new Color(rend.material.color.r, rend.material.color.g, rend.material.color.b, Mathf.Lerp(alpha, 0.0f, Time.deltaTime * 0.5f));
+                rend.material.color = newColor;
+                yield return null;
+            }
+        }
+
+        Destroy(gameObject);
     }
 }
