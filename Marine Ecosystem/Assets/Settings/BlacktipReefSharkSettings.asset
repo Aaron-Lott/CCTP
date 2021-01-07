@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: BlacktipReefSharkSettings
   m_EditorClassIdentifier: 
   species: 5
-  gender: 1
   scientificSpecies: Carcharhinus melanopterus
   fact: It gets its name from the prominent black tips on its fins.
+  material: {fileID: 2100000, guid: 00482deb3803b3743857b42f89f04efc, type: 2}
+  gender: 1
   lifeSpan: {x: 11, y: 15}
-  femaleNameFile: {fileID: 4900000, guid: a72466e7f65d57644af7899f6e8d6b06, type: 3}
-  maleNameFile: {fileID: 4900000, guid: 64ac459f06df801429141f257fd33f2f, type: 3}
   maturityAge: 6
   sizeAtBirth: 0.3
+  diet: 
+  perceptiveRange: 5
+  femaleNameFile: {fileID: 4900000, guid: a72466e7f65d57644af7899f6e8d6b06, type: 3}
+  maleNameFile: {fileID: 4900000, guid: 64ac459f06df801429141f257fd33f2f, type: 3}

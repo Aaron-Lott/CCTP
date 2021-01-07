@@ -6,12 +6,7 @@ public class LivingEntity : MonoBehaviour
 {
     public Species Species { get { return settings.species; } }
 
-    public Gender Gender { get { return settings.gender; } }
-
     protected bool dead;
-
-    protected int timeScale = 60; // 1 year = 1 minute
-    protected float elapsedTime = 0;
 
     protected float age = 0;
 
@@ -22,8 +17,6 @@ public class LivingEntity : MonoBehaviour
     [Range(0.0f, 1.0f)]
     protected float health = 1.0f;
 
-    protected string entityName = null;
-
     
     [SerializeField] protected LivingEntitySettings settings = null;
 
@@ -31,8 +24,7 @@ public class LivingEntity : MonoBehaviour
 
     public float Age { get { return age; } }
 
-    public int MaxLifeSpan { get { return settings.lifeSpan.y; } }
-    public int MinLifeSpan { get { return settings.lifeSpan.x; } }
+    public bool SimulatingAge { get; protected set; } = false;
 
     public float Health {get { return health;  } }
 
@@ -40,7 +32,7 @@ public class LivingEntity : MonoBehaviour
 
     public string Fact { get { return settings.fact; } }
 
-    public string RandomName {get { return entityName; } }
+    protected Renderer _renderer;
 
     private void Start()
     {
@@ -49,19 +41,19 @@ public class LivingEntity : MonoBehaviour
 
     protected virtual void Init()
     {
-        lifeSpan = settings.GetLifeSpan();
+        _renderer = GetComponentInChildren<Renderer>();
     }
 
     protected virtual void Update()
     {
+        if(SimulatingAge)
         SimulateAge();
 
-        health = (1.0f - age / MaxLifeSpan);
+        SimulateHealth();
 
         if(DisplayInformationPanel())
         {
-            UIManager.Instance.UpdateInformationPanel(this);
-
+            UpdateInfoPanel();
             SetShaderOutline(0.04f);
         }
         else
@@ -70,26 +62,39 @@ public class LivingEntity : MonoBehaviour
         }
     }
 
-    public virtual bool SimulateAge()
+    protected virtual void UpdateInfoPanel()
     {
-        elapsedTime += Time.deltaTime;
+        UIManager.Instance.UpdateInfoPanelProducer(this);
+    }
 
-        age = elapsedTime / timeScale;
+    public virtual void SimulateHealth()
+    {
+
+    }
+
+    public virtual void SimulateAge()
+    {
+        age += (Time.deltaTime / Environment.Instance.TimeScale);
 
         if (age >= lifeSpan)
         {
             Die(CauseOfDeath.Age);
         }
 
-        return true;
+        if(health <= 0.0f)
+        {
+            Die(CauseOfDeath.HealthDepleated);
+        }
     }
 
     protected virtual void Die(CauseOfDeath cause)
     {
         if (!dead)
         {
+            Debug.Log(cause);
             dead = true;
         }
+
     }
 
     public bool DisplayInformationPanel()
@@ -104,27 +109,23 @@ public class LivingEntity : MonoBehaviour
 
     public void SetShaderOutline(float value)
     {
-        var renderer = gameObject.GetComponentInChildren<Renderer>();
-
-        if (renderer)
+        if (_renderer)
         {
-            renderer.sharedMaterial.SetFloat("_FirstOutlineWidth", value);
+            _renderer.material.SetFloat("_FirstOutlineWidth", value);
         }
     }
 
     protected IEnumerator FadeOutRoutine()
     {
-        Renderer rend = GetComponentInChildren<Renderer>();
-
-        if(rend)
+        if(_renderer)
         {
-            rend.material.shader = Shader.Find("Transparent/Diffuse");
+            _renderer.material.shader = Shader.Find("Transparent/Diffuse");
 
-            while(rend.material.color.a > 0.0f)
+            while(_renderer.material.color.a > 0.0f)
             {
-                float alpha = rend.material.color.a;
-                Color newColor = new Color(rend.material.color.r, rend.material.color.g, rend.material.color.b, Mathf.Lerp(alpha, 0.0f, Time.deltaTime * 0.5f));
-                rend.material.color = newColor;
+                float alpha = _renderer.material.color.a;
+                Color newColor = new Color(_renderer.material.color.r, _renderer.material.color.g, _renderer.material.color.b, Mathf.Lerp(alpha, 0.0f, Time.deltaTime * 0.5f));
+                _renderer.material.color = newColor;
                 yield return null;
             }
         }

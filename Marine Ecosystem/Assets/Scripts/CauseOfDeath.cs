@@ -2,5 +2,6 @@
 {
     Hunger,
     Age,
-    Eaten
+    Eaten,
+    HealthDepleated
 }

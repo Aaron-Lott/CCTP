@@ -4,43 +4,70 @@ using UnityEngine;
 
 public class Consumer : LivingEntity
 {
-    CreatureAction currentAction;
+    public CreatureAction CurrentAction { get; private set; }
 
-    protected float perceptiveRange = 5f;
+    protected string entityName = null;
 
     protected float moveSpeed = 2f;
     protected float fastMoveSpeed = 6f;
 
-    [HideInInspector]
-    public Vector3 moveDirection;
+
+    protected Vector3 moveDirection;
+    protected Vector3 moveTarget;
+    protected Vector3 randomTarget;
 
     protected float timeBetweenActionChoices = 1;
     protected float lastActionChooseTime;
 
     protected float hunger = 0;
-    protected float timeUntilDeathByHunger = 100;
 
-    protected float eatDuration = 10;
+    protected float eatDuration = 8;
 
-    protected float criticalPercent = 0.7f;
+    protected float criticalHungerPercent = 0.7f;
+
+    protected bool currentActionIsImportant = false;
+
+    public float CriticalHungerPercent { get { return criticalHungerPercent;  } }
 
     protected LivingEntity foodTarget;
+
+    protected Consumer mateTarget;
 
     protected ConsumerSettings consumerSettings;
 
     protected bool isMature = false;
 
+    public float Hunger { get { return hunger; } }
+
+    public int MaxLifeSpan { get { return consumerSettings.lifeSpan.y; } }
+    public int MinLifeSpan { get { return consumerSettings.lifeSpan.x; } }
+
+    protected Species[] Diet {get {return consumerSettings.diet; } }
+
+    protected float PerceptiveRange { get { return consumerSettings.perceptiveRange;  } }
+
+    public Gender Gender { get { return consumerSettings.gender; } }
+
+    public string RandomName { get { return entityName; } }
+
     protected override void Init()
     {
         base.Init();
 
-        if (Gender == Gender.Male) entityName = settings.GetRandomMaleName();
-        else if (Gender == Gender.Female) entityName = settings.GetRandomFemaleName();
+        consumerSettings = (ConsumerSettings)settings;
+
+        lifeSpan = consumerSettings.GetLifeSpan();
+
+        if (Gender == Gender.Male) entityName = consumerSettings.GetRandomMaleName();
+        else if (Gender == Gender.Female) entityName = consumerSettings.GetRandomFemaleName();
         else entityName = null;
 
-        consumerSettings = (ConsumerSettings)settings;
         transform.localScale = consumerSettings.ScaleAtBirth;
         StartCoroutine(GrowRoutine());
+
+        SimulatingAge = true;
+
+        StartCoroutine(GetMoveTarget());
     }
 
     protected override void Update()
@@ -49,40 +76,70 @@ public class Consumer : LivingEntity
 
         float timeSinceLastActionChoice = Time.time - lastActionChooseTime;
 
-        if (timeSinceLastActionChoice > timeBetweenActionChoices)
+        if (timeSinceLastActionChoice > timeBetweenActionChoices && !dead)
         {
             ChooseNextAction();
         }
 
-        hunger += Time.deltaTime * 1 / timeUntilDeathByHunger;
+        hunger += Time.deltaTime * 1 / Environment.Instance.TimeScale;
 
         if (hunger >= 1f)
         {
-            //Die(CauseOfDeath.Hunger);
+            Die(CauseOfDeath.Hunger);
         }
 
-        transform.position += moveDirection.normalized * moveSpeed * Time.deltaTime;
+        if(!dead)
+        {
+            if(CurrentAction != CreatureAction.Exploring)
+            {
+                moveTarget = Vector3.zero;
+            }
 
-        if (moveDirection.normalized != Vector3.zero)
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(moveDirection.normalized), 0.15f);
+            Vector3 move = moveDirection.normalized + moveTarget.normalized;
+            transform.position += move * moveSpeed * Time.deltaTime;
+
+            if (move != Vector3.zero)
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(move), 0.15f);
+        }
     }
 
     protected virtual void ChooseNextAction()
     {
+        if (hunger >= criticalHungerPercent)
+        {
+                foodTarget = GetClosestFoodSource(PerceptiveRange);        
+        }
+        else if (isMature && !mateTarget)
+        {
+            mateTarget = GetClosestMate(PerceptiveRange);
+        }
+
+        if (hunger < 1 - criticalHungerPercent)
+        {
+            CurrentAction = CreatureAction.Exploring;
+        }
+
         Act();
     }
 
     protected virtual void Act()
     {
-        currentAction = CreatureAction.Socialising;
 
-        switch(currentAction)
+        switch (CurrentAction)
         {
-            case CreatureAction.GoingToFood:
+            case CreatureAction.Resting:
                 break;
 
-            case CreatureAction.Socialising:
-                Socialising();
+            case CreatureAction.Foraging:
+                Eat(foodTarget);
+                break;
+
+            case CreatureAction.Exploring:
+                Exploring();
+                break;
+
+            case CreatureAction.Mating:
+                Mate(mateTarget);
                 break;
 
             case CreatureAction.EscapingPredator:
@@ -92,29 +149,115 @@ public class Consumer : LivingEntity
         }
     }
 
-    protected virtual void SearchForFood()
+    protected virtual LivingEntity GetClosestFoodSource(float range)
     {
-        LivingEntity foodSource = null;
-        if (foodSource)
+        Collider[] collidersInRange = Physics.OverlapSphere(transform.position, range);
+
+        float distanceToClosestTarget = Mathf.Infinity;
+        LivingEntity closestTarget = null;
+
+        foreach (var collider in collidersInRange)
         {
-            currentAction = CreatureAction.GoingToFood;
-            foodTarget = foodSource;
+            LivingEntity entity = collider.GetComponent<LivingEntity>();
+
+            if(entity)
+            {
+                foreach (Species food in Diet)
+                {
+                    if (entity.Species == food)
+                    {
+                        float distanceToTarget = (entity.transform.position - transform.position).sqrMagnitude;
+
+                        if (distanceToTarget < distanceToClosestTarget)
+                        {
+                            distanceToClosestTarget = distanceToTarget;
+                            closestTarget = entity;
+                        }
+                    }
+                }
+            }        
         }
-        else
+
+        if(closestTarget)
         {
-            currentAction = CreatureAction.EscapingPredator;
+            CurrentAction = CreatureAction.Foraging; 
+        }
+
+        return closestTarget;
+    }
+
+    protected virtual Consumer GetClosestMate(float range)
+    {
+        Collider[] collidersInRange = Physics.OverlapSphere(transform.position, range);
+
+        float distanceToClosestTarget = Mathf.Infinity;
+        Consumer closestTarget = null;
+
+        foreach (var collider in collidersInRange)
+        {
+            Consumer entity = collider.GetComponent<Consumer>();
+
+            if(entity)
+            {
+                if (entity.Species == this.Species && entity != this)
+                {
+                    float distanceToTarget = (entity.transform.position - transform.position).sqrMagnitude;
+
+                    if (distanceToTarget < distanceToClosestTarget)
+                    {
+                        distanceToClosestTarget = distanceToTarget;
+                        closestTarget = entity;
+                    }
+                }
+            }
+        }
+
+        if (closestTarget)
+        {
+            //CurrentAction = CreatureAction.Mating;
+        }
+
+        return closestTarget;
+    }
+
+    protected void  Eat(LivingEntity food)
+    {
+        if (food)
+        {
+            var targetPos = food.transform.position + new Vector3(0, 1 , 0);
+
+            if (Vector3.Distance(transform.position, targetPos) > 0.1f)
+            {
+                moveDirection = (targetPos - transform.position);
+            }
+            else
+            {
+                moveDirection = Vector3.zero;
+
+                if (food && hunger > 0)
+                {
+                    float eatAmount = Mathf.Min(hunger, Time.deltaTime * 1 / eatDuration);
+                    eatAmount = ((Producer)food).Consume(eatAmount);
+                    hunger -= eatAmount * 1.5f;
+                }
+            }
         }
     }
 
-    void HandleInteractions()
+    protected void Mate(Consumer mate)
     {
-        if (currentAction == CreatureAction.Eating)
+        if (mate)
         {
-            if (foodTarget && hunger > 0)
+            var targetPos = mate.transform.position;
+
+            if (Vector3.Distance(transform.position, targetPos) > 0.5f)
             {
-                float eatAmount = Mathf.Min(hunger, Time.deltaTime * 1 / eatDuration);
-                eatAmount = ((Producer)foodTarget).Consume(eatAmount);
-                hunger -= eatAmount;
+                moveDirection = (targetPos - transform.position);
+            }
+            else
+            {
+                moveDirection = Vector3.zero;
+                currentActionIsImportant = true;
             }
         }
     }
@@ -123,6 +266,7 @@ public class Consumer : LivingEntity
     {
         if(!dead)
         {
+            RemoveFromLists();
             StartCoroutine(DieRoutine());
         }
 
@@ -131,7 +275,7 @@ public class Consumer : LivingEntity
 
     protected IEnumerator DieRoutine()
     {
-        var anim = GetComponent<Animator>();
+        var anim = GetComponentInChildren<Animator>();
 
         if(anim)
         {
@@ -139,8 +283,6 @@ public class Consumer : LivingEntity
         }
 
         Vector3 waterSurface = new Vector3(transform.position.x, 0.5f, transform.position.z);
-
-        float randNum = Random.Range(0.0f, 1.0f);
 
         while (transform.position.y < waterSurface.y)
         {
@@ -153,6 +295,8 @@ public class Consumer : LivingEntity
 
         StartCoroutine(FadeOutRoutine());
     }
+
+    protected virtual void RemoveFromLists() { }
 
     protected IEnumerator GrowRoutine()
     {
@@ -172,13 +316,38 @@ public class Consumer : LivingEntity
 
     }
 
-    protected virtual void Socialising()
+    protected virtual void Exploring()
     {
-
+        if(Vector3.Distance(transform.position, randomTarget) > 0.1f)
+        {
+            moveTarget = randomTarget - transform.position;
+        }
+        else
+        {
+            moveTarget = Vector3.zero;
+        }
     }
 
-    private void OnTriggerExit(Collider other)
+    public override void SimulateHealth()
     {
-        
+        health = (1.0f - (age / MaxLifeSpan) - (hunger / eatDuration));
     }
+
+    protected override void UpdateInfoPanel()
+    {
+        UIManager.Instance.UpdateInfoPanelConsumer(this);
+    }
+
+    protected IEnumerator GetMoveTarget()
+    {
+        while(!dead)
+        {
+            randomTarget = BoidManager.Instance.GetRandomTarget();
+
+            float randTime = Random.Range(4, 12);
+            yield return new WaitForSeconds(randTime);
+            yield return null;
+        }
+    }
+
 }

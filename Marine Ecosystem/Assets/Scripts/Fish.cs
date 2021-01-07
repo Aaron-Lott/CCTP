@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Fish : Consumer
 {
-    private List<Fish> otherFish = new List<Fish>();
-
     protected override void Init()
     {
         base.Init();
-        PopulateFishList();
+        BoidManager.Instance.allBoids.Add(this);
+    }
+
+    protected override void Update()
+    {
+        base.Update();
     }
 
     protected override void EscapeFromPredator()
@@ -18,14 +21,20 @@ public class Fish : Consumer
         moveSpeed = fastMoveSpeed;
     }
 
-    protected override void Socialising()
+    protected override void Exploring()
     {
-        //Shoal();
+        base.Exploring();
+        Shoal();
     }
 
     protected void Shoal()
     {
         moveDirection += (Cohesion() + Seperation() + Alignment());
+    }
+
+    protected override void RemoveFromLists()
+    {
+        BoidManager.Instance.allBoids.Remove(this);
     }
 
     #region Boid Behaviours
@@ -35,12 +44,15 @@ public class Fish : Consumer
         int numNeighbours = 0;
         Vector3 center = Vector3.zero;
 
-        foreach (Fish fish in otherFish)
+        foreach (Fish fish in BoidManager.Instance.allBoids)
         {
-            if (Vector3.Distance(transform.position, fish.transform.position) < perceptiveRange)
+            if(fish.Species == this.Species)
             {
-                center += fish.transform.position;
-                numNeighbours++;
+                if (Vector3.Distance(transform.position, fish.transform.position) < PerceptiveRange)
+                {
+                    center += fish.transform.position;
+                    numNeighbours++;
+                }
             }
         }
 
@@ -48,7 +60,7 @@ public class Fish : Consumer
         {
             center /= numNeighbours;
 
-             return (center - transform.position).normalized * BoidsBehaviour.Instance.cohesionFactor;
+             return (center - transform.position).normalized * BoidManager.Instance.boidSettings.cohesionFactor;
         }
 
         return Vector3.zero;
@@ -59,15 +71,18 @@ public class Fish : Consumer
         const float minDistance = 1f;
         Vector3 move = Vector3.zero;
 
-        foreach (Fish fish in otherFish)
+        foreach (Fish fish in BoidManager.Instance.allBoids)
         {
-            if (Vector3.Distance(transform.position, fish.transform.position) < minDistance)
+            if (fish.Species == this.Species)
             {
-                move += transform.position - fish.transform.position;
+                if (Vector3.Distance(transform.position, fish.transform.position) < minDistance)
+                {
+                    move += transform.position - fish.transform.position;
+                }
             }
         }
 
-        return move.normalized * BoidsBehaviour.Instance.seperationFactor;
+        return move.normalized * BoidManager.Instance.boidSettings.seperationFactor;
     }
 
     private Vector3 Alignment()
@@ -75,12 +90,15 @@ public class Fish : Consumer
         Vector3 avgVelocity = Vector3.zero;
         float numNeighbours = 0;
 
-        foreach (Fish fish in otherFish)
+        foreach (Fish fish in BoidManager.Instance.allBoids)
         {
-            if (Vector3.Distance(transform.position, fish.transform.position) < perceptiveRange)
+            if (fish.Species == this.Species)
             {
-                avgVelocity += fish.moveDirection;
-                numNeighbours++;
+                if (Vector3.Distance(transform.position, fish.transform.position) < PerceptiveRange)
+                {
+                    avgVelocity += fish.moveDirection;
+                    numNeighbours++;
+                }
             }
         }
 
@@ -88,21 +106,10 @@ public class Fish : Consumer
         {
             avgVelocity /= numNeighbours;
 
-            return avgVelocity.normalized * BoidsBehaviour.Instance.alignmentFactor;
+            return avgVelocity.normalized * BoidManager.Instance.boidSettings.alignmentFactor;
         }
 
         return Vector3.zero;
-    }
-
-    private void PopulateFishList()
-    {
-        foreach (Fish fish in FindObjectsOfType<Fish>())
-        {
-            if (fish != this)
-            {
-                otherFish.Add(fish);
-            }
-        }
     }
 
     #endregion

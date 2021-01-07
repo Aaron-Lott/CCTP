@@ -5,11 +5,14 @@ using UnityEngine;
 public class Producer : LivingEntity
 {
     float amountRemaining = 1;
-    const float consumeSpeed = 8;
+    const float consumeSpeed = 2;
+
+    private Vector3 initalScale;
 
     protected override void Init()
     {
         base.Init();
+        initalScale = transform.localScale;
     }
 
     protected override void Update()
@@ -17,9 +20,9 @@ public class Producer : LivingEntity
         base.Update();
     }
 
-    public override bool SimulateAge()
+    protected override void UpdateInfoPanel()
     {
-        return false;
+        UIManager.Instance.UpdateInfoPanelProducer(this);
     }
 
     public float Consume(float amount)
@@ -27,14 +30,20 @@ public class Producer : LivingEntity
         float amountConsumed = Mathf.Max(0, Mathf.Min(amountRemaining, amount));
         amountRemaining -= amount * consumeSpeed;
 
-        //transform.localScale = Vector3.one * amountRemaining;
+        transform.localScale = initalScale * Mathf.Min(amountRemaining, 1.0f);
 
         if (amountRemaining <= 0)
         {
-            //Die(CauseOfDeath.Eaten);
+            Die(CauseOfDeath.Eaten);
         }
 
         return amountConsumed;
+    }
+
+    protected override void Die(CauseOfDeath cause)
+    {
+        base.Die(cause);
+        Destroy(gameObject);
     }
 
     public float AmountRemaining

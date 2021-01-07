@@ -8,16 +8,16 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [SerializeField] private GameObject informationPanel = null;
-    [SerializeField] private Text speciesAndName = null, scientificName = null, minLifeSpanText = null, maxLifeSpanText = null, factText = null;
-    [SerializeField] private Slider ageSlider = null;
-    [SerializeField] private Slider healthSlider = null;
-    [SerializeField] private Image ageSliderFill = null, healthSliderFill = null, gender = null;
+    [SerializeField] private Text speciesAndName = null, scientificName = null, minLifeSpanText = null, maxLifeSpanText = null, actionText = null, hungerText = null;
+    [SerializeField] private Slider ageSlider = null, healthSlider = null, hungerSlider = null;
+    [SerializeField] private Image ageSliderFill = null, healthSliderFill = null, hungerSliderFill = null, gender = null;
     [SerializeField] private Sprite maleSymbol = null, femaleSymbol = null;
 
     //COLORS
     private Color pastelBlue = new Color(0.682f, 0.776f, 0.812f);
     private Color pastelGreen = new Color(0.467f, 0.867f, 0.467f);
     private Color pastelRed = new Color(1.0f, 0.412f, 0.38f);
+    private Color pastelYellow = new Color(0.992f, 0.992f, 0.588f);
 
     private void Awake()
     {
@@ -40,39 +40,79 @@ public class UIManager : MonoBehaviour
         informationPanel.SetActive(active);
     }
 
-    public void UpdateInformationPanel(LivingEntity entity)
+    public void UpdateInfoPanelConsumer(Consumer consumer)
     {
-        if (speciesAndName) speciesAndName.text = entity.RandomName != null ? entity.RandomName + " | " + entity.Species.ToString() : entity.Species.ToString();
-        if (scientificName) scientificName.text = entity.ScientificName;
-        if (ageSlider) ageSlider.value = entity.Age / entity.MaxLifeSpan;
-        if (maxLifeSpanText) maxLifeSpanText.text = entity.MaxLifeSpan.ToString();
-        if (healthSlider) healthSlider.value = entity.Health;
-        if (factText) factText.text = entity.Fact;
+        ageSlider.gameObject.SetActive(true);
+        hungerSlider.gameObject.SetActive(true);
 
-        if(gender)
-        {
-            gender.enabled = true;
-            if (entity.Gender == Gender.Male) gender.sprite = maleSymbol;
-            else if (entity.Gender == Gender.Female) gender.sprite = femaleSymbol;
-            else gender.enabled = false;
+        speciesAndName.text = consumer.RandomName + " | " + consumer.Species.ToString();
+        scientificName.text = consumer.ScientificName;
+        ageSlider.value = consumer.Age / consumer.MaxLifeSpan;
+        maxLifeSpanText.text = consumer.MaxLifeSpan.ToString();
+        healthSlider.value = consumer.Health;
+        hungerSlider.value = consumer.Hunger;
+        hungerText.text = "";
+        actionText.text = consumer.CurrentAction.ToString();
 
-        }
+        gender.enabled = true;
+        if (consumer.Gender == Gender.Male) gender.sprite = maleSymbol;
+        else if (consumer.Gender == Gender.Female) gender.sprite = femaleSymbol;
 
-        if(entity.Age >= entity.MinLifeSpan)
+
+        minLifeSpanText.text = "0";
+
+        if (consumer.Age >= consumer.MinLifeSpan)
         {
             ageSliderFill.color = pastelRed;
         }
+        else
+        {
+            ageSliderFill.color = pastelBlue;
+        }
 
-        if(entity.Health <= 0.25f)
+        if(consumer.Health <= 0.25f)
         {
             healthSliderFill.color = pastelRed;
         }
+        else
+        {
+            healthSliderFill.color = pastelGreen;
+        }
 
-        ageSlider.gameObject.SetActive(entity.SimulateAge());
-        maxLifeSpanText.gameObject.SetActive(entity.SimulateAge());
+        if(consumer.Hunger >= consumer.CriticalHungerPercent)
+        {
+            hungerSliderFill.color = pastelRed;
+        }
+        else
+        {
+            hungerSliderFill.color = pastelYellow;
+        }
 
-        if (!entity.SimulateAge()) minLifeSpanText.text = "N/A";
-        else minLifeSpanText.text = "0";
+    }
+
+    public void UpdateInfoPanelProducer(LivingEntity producer)
+    {
+        speciesAndName.text = producer.Species.ToString();
+        scientificName.text = producer.ScientificName;
+        healthSlider.value = producer.Health;
+        ageSlider.gameObject.SetActive(false);
+        hungerSlider.gameObject.SetActive(false);
+
+        maxLifeSpanText.text = "";
+        minLifeSpanText.text = "N/A";
+        hungerText.text = "N/A";
+        actionText.text = "N/A";
+
+        gender.enabled = false;
+
+        if (producer.Health <= 0.25f)
+        {
+            healthSliderFill.color = pastelRed;
+        }
+        else
+        {
+            healthSliderFill.color = pastelGreen;
+        }
 
     }
 

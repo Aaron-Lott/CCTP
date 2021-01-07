@@ -27,7 +27,7 @@ public class WaterCollider : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    /*private void OnTriggerExit(Collider other)
     {
         if (other.gameObject == Camera.main.gameObject)
         {
@@ -43,7 +43,7 @@ public class WaterCollider : MonoBehaviour
         {
             consumer.moveDirection *= -1;
         }
-    }
+    }*/
 
     private void SetUpBoxCollider(float sizeX, float sizeZ, float waterDepth)
     {

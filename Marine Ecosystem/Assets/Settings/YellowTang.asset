@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: YellowTang
   m_EditorClassIdentifier: 
   species: 2
-  gender: 2
   scientificSpecies: Zebrasoma flavescens
   fact: At night their yellow color fades, and brightens again in the morning.
+  material: {fileID: 2100000, guid: ea864d8340867e94f8f75bd88bfaccc0, type: 2}
+  gender: 2
   lifeSpan: {x: 25, y: 40}
-  femaleNameFile: {fileID: 4900000, guid: a72466e7f65d57644af7899f6e8d6b06, type: 3}
-  maleNameFile: {fileID: 4900000, guid: 64ac459f06df801429141f257fd33f2f, type: 3}
   maturityAge: 7
   sizeAtBirth: 0.2
+  diet: 
+  perceptiveRange: 5
+  femaleNameFile: {fileID: 4900000, guid: a72466e7f65d57644af7899f6e8d6b06, type: 3}
+  maleNameFile: {fileID: 4900000, guid: 64ac459f06df801429141f257fd33f2f, type: 3}

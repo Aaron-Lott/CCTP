@@ -13,9 +13,6 @@ MonoBehaviour:
   m_Name: YellowTubeSponge
   m_EditorClassIdentifier: 
   species: 4
-  gender: 0
   scientificSpecies: Aplysina fistularis
   fact: They produce chemicals that give them an unpleasant flavor.
-  lifeSpan: {x: 4000, y: 4000}
-  femaleNameFile: {fileID: 0}
-  maleNameFile: {fileID: 0}
+  material: {fileID: 2100000, guid: dcfe0e7bb84ba484788db7423a3252b5, type: 2}

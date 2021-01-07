@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: MoorishIdol
   m_EditorClassIdentifier: 
   species: 1
-  gender: 1
   scientificSpecies: Zanclus cornutus
   fact: They have a very long, white dorsal fin.
+  material: {fileID: 2100000, guid: a81da0e3476d9164ea69ec5b3bb3ad73, type: 2}
+  gender: 1
   lifeSpan: {x: 2, y: 4}
-  femaleNameFile: {fileID: 4900000, guid: a72466e7f65d57644af7899f6e8d6b06, type: 3}
-  maleNameFile: {fileID: 4900000, guid: 64ac459f06df801429141f257fd33f2f, type: 3}
   maturityAge: 1
   sizeAtBirth: 0.2
+  diet: 
+  perceptiveRange: 5
+  femaleNameFile: {fileID: 4900000, guid: a72466e7f65d57644af7899f6e8d6b06, type: 3}
+  maleNameFile: {fileID: 4900000, guid: 64ac459f06df801429141f257fd33f2f, type: 3}

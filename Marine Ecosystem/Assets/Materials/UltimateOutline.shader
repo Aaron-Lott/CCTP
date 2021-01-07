@@ -14,6 +14,9 @@ Shader "Outlined/UltimateOutline"
 		_SecondOutlineWidth("Outlines width", Range(0.0, 2.0)) = 0.025
 
 		_Angle("Switch shader on angle", Range(0.0, 180.0)) = 89
+
+		_Emission("Emission", float) = 0
+       [HDR] _EmissionColor("Emission color", Color) = (0,0,0)
 	}
 
 	CGINCLUDE
@@ -33,6 +36,9 @@ Shader "Outlined/UltimateOutline"
 	uniform sampler2D _MainTex;
 	uniform float4 _Color;
 	uniform float _Angle;
+
+	uniform float _Emission;
+	uniform float4 _EmissionColor;
 
 	ENDCG
 
@@ -136,6 +142,7 @@ Shader "Outlined/UltimateOutline"
 			fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
 			o.Albedo = c.rgb;
 			o.Alpha = c.a;
+			o.Emission = c.rgb * tex2D(_MainTex, IN.uv_MainTex).a * _EmissionColor * _Emission;
 		}
 		ENDCG
 	}
