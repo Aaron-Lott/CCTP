@@ -64,7 +64,7 @@ public class OrbitCamera : MonoBehaviour
 
     public void SetFocus(Transform f, Vector3 offset)
     {
-        focus = f;
+        focus = f;      
     }
 
 }

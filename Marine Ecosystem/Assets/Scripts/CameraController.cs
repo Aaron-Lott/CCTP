@@ -12,7 +12,8 @@ public class CameraController : MonoBehaviour
 
     private LivingEntity selectedEntity;
 
-    private bool orbitCamEnabled = false;
+    [HideInInspector]
+    public bool orbitCamEnabled = false;
 
     private void Awake()
     {
@@ -31,19 +32,27 @@ public class CameraController : MonoBehaviour
         freeCam = GetComponent<FreeCamera>();
         orbitCam = GetComponent<OrbitCamera>();
 
-        HideAndLockCursor();
         SetOrbitCamera(false);
     }
 
     private void LateUpdate()
     {
-        if (orbitCamEnabled && Input.GetButtonDown("Fire2"))
+        if (orbitCamEnabled && (Input.GetButtonDown("Fire2") || selectedEntity.Dead))
         {
             selectedEntity = null;
 
             SetOrbitCamera(false);
             orbitCamEnabled = false;
         }
+
+        if (Input.GetKeyDown(KeyCode.Tab) && !orbitCamEnabled)
+        {
+            UIManager.Instance.ToggleYearUI();
+            freeCam.enabled = !UIManager.Instance.YearUIActive();
+        }
+
+        if (Environment.Instance != null)
+        Environment.Instance.KeepInBounds(transform);
     }
 
     private void SetOrbitCamera(bool orbitCamActive)
@@ -52,49 +61,47 @@ public class CameraController : MonoBehaviour
         orbitCam.enabled = orbitCamActive;
     }
 
-    void HideAndLockCursor()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
-
-    void ShowAndUnlockCursor()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
-
     public LivingEntity DetectEntity()
     {
-        float castDist = orbitCam.maxDistance;
-
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, transform.forward, out hit, castDist))
+        if(!UIManager.Instance.YearUIActive())
         {
-            LivingEntity entity = hit.transform.GetComponent<LivingEntity>();
+            float castDist = orbitCam.maxDistance;
 
-            if (entity && !entity.Dead)
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, transform.forward, out hit, castDist))
             {
-                UIManager.Instance.SetInformationPanelActive(true);
+                LivingEntity entity = hit.transform.GetComponent<LivingEntity>();
 
-                if (!orbitCamEnabled && Input.GetButtonDown("Fire1"))
+                if (entity && !entity.Dead)
                 {
-                    selectedEntity = entity;
+                    if (UIManager.Instance != null)
+                        UIManager.Instance.SetInformationPanelActive(true);
 
-                    SetOrbitCamera(true);
-                    orbitCam.SetFocus(entity.transform, entity.orbitCamViewOffset);
-                    orbitCamEnabled = true;
+                    if (!orbitCamEnabled && Input.GetButtonDown("Fire1"))
+                    {
+                        selectedEntity = entity;
+
+                        SetOrbitCamera(true);
+                        orbitCam.SetFocus(entity.transform, entity.orbitCamViewOffset);
+                        orbitCamEnabled = true;
+                    }
+
+                    if (selectedEntity) return selectedEntity;
+
+                    return entity;
                 }
-
-                if (selectedEntity) return selectedEntity;
-
-                return entity;
             }
         }
 
-        UIManager.Instance.SetInformationPanelActive(false);
-        
+        if (UIManager.Instance != null)
+            UIManager.Instance.SetInformationPanelActive(false);
+
         return null;
-    } 
+    }
+
+    public void ActivateFreeCam(bool active)
+    {
+        freeCam.enabled = active;
+    }
 }

@@ -1,4 +1,8 @@
-﻿public enum CreatureAction
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public enum CreatureAction
 {
     Resting,
     Exploring,
@@ -6,3 +10,7 @@
     Mating,
     EscapingPredator
 }
+
+
+
+

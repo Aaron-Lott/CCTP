@@ -33,6 +33,7 @@ public class LivingEntity : MonoBehaviour
     public string Fact { get { return settings.fact; } }
 
     protected Renderer _renderer;
+    protected Animator anim;
 
     private void Start()
     {
@@ -41,6 +42,7 @@ public class LivingEntity : MonoBehaviour
 
     protected virtual void Init()
     {
+        anim = GetComponentInChildren<Animator>();
         _renderer = GetComponentInChildren<Renderer>();
     }
 
@@ -74,6 +76,7 @@ public class LivingEntity : MonoBehaviour
 
     public virtual void SimulateAge()
     {
+        if(Environment.Instance != null)
         age += (Time.deltaTime / Environment.Instance.TimeScale);
 
         if (age >= lifeSpan)
@@ -120,11 +123,11 @@ public class LivingEntity : MonoBehaviour
         if(_renderer)
         {
             _renderer.material.shader = Shader.Find("Transparent/Diffuse");
+            float startAlpha = _renderer.material.color.a;
 
-            while(_renderer.material.color.a > 0.0f)
+            for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 0.5f)
             {
-                float alpha = _renderer.material.color.a;
-                Color newColor = new Color(_renderer.material.color.r, _renderer.material.color.g, _renderer.material.color.b, Mathf.Lerp(alpha, 0.0f, Time.deltaTime * 0.5f));
+                Color newColor = new Color(_renderer.material.color.r, _renderer.material.color.g, _renderer.material.color.b, Mathf.Lerp(startAlpha, 0.0f, t));
                 _renderer.material.color = newColor;
                 yield return null;
             }

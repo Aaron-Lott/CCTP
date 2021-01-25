@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44a3b8640f61304c8f792d0b57b4251, type: 3}
   m_Name: BoidSettings
   m_EditorClassIdentifier: 
-  cohesionFactor: 0.8
-  seperationFactor: 0.6
-  alignmentFactor: 0.4
+  cohesionFactor: 1
+  seperationFactor: 0.4
+  alignmentFactor: 0.6

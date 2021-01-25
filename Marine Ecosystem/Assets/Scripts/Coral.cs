@@ -14,7 +14,11 @@ public class Coral : Producer
 
     public Color DeadColor { get { return coralSettings.DeadColor(); } }
 
+    Color orignalColor;
     private float fluoresceTemp;
+
+    private enum Colors {ORIGINAL, FLUORESCED, DEAD}
+    Colors colors = Colors.ORIGINAL;
 
     protected override void Init()
     {
@@ -22,8 +26,9 @@ public class Coral : Producer
         coralSettings = (CoralSettings)settings;
 
         fluoresceTemp = Environment.Instance.SeaTemperature + Random.Range(0.5f, 1f);
+        orignalColor = _renderer.material.GetColor("_Color");
 
-        if(DoesFluoresce)
+        //if(DoesFluoresce)
         StartCoroutine(FluoresceRoutine(FluoresceBlue));
     }
 
@@ -31,6 +36,69 @@ public class Coral : Producer
     {
         base.Update();
     }
+
+    protected IEnumerator UpdateColor(Color fluorescentColor)
+    {
+        var currentColor = _renderer.material.GetColor("_Color");
+        float currentTemp = Environment.Instance.seaTemperature;
+
+        bool routineCalled = false;
+
+        while(!dead)
+        {
+            if(!routineCalled)
+            {
+                if (currentTemp > fluoresceTemp)
+                {
+                    LerpColor(orignalColor, fluorescentColor);
+                    routineCalled = true;
+                }
+
+                if(currentColor == fluorescentColor && currentTemp < 0)
+                {
+
+                }
+            }
+                yield return null;
+        }
+    }
+
+    protected IEnumerator LerpColor(Color start, Color target)
+    {
+        float duration = 10f;
+        float increment = Time.deltaTime / (duration / 2f);
+        float progress = 0f;
+
+        while (progress < 1f)
+        {
+            _renderer.material.SetColor("_Color", Color.Lerp(start, target, progress));
+            progress += increment;
+            yield return null;
+        }
+        
+    }
+
+    /*protected IEnumerator FluoresceRoutine(Color fluorescentColor)
+    {
+        var orignalColor = _renderer.material.GetColor("_Color");
+
+        Colors color = Colors.ORIGINAL;
+
+        while (!dead)
+        {
+            var currentColor = _renderer.material.GetColor("_Color");
+            float currentTemp = Environment.Instance.seaTemperature;
+
+            if(currentTemp >= fluoresceTemp && color == Colors.ORIGINAL)
+            {
+                LerpColor(orignalColor, fluorescentColor);
+            }
+
+
+            yield return null;
+        }
+    }*/
+
 
     protected IEnumerator FluoresceRoutine(Color fluorescentColor)
     {
@@ -40,7 +108,7 @@ public class Coral : Producer
 
         while (!dead)
         {
-            float t = 0.05f * Mathf.PingPong(Time.time, 1);
+            float t = Time.deltaTime * 0.5f;
 
             var currentColor = _renderer.material.GetColor(colorString);
 

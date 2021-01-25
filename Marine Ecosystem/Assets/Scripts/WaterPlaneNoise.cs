@@ -13,17 +13,19 @@ public class WaterPlaneNoise : MonoBehaviour
     private float offsetY;
 
     private MeshFilter filter;
+    private Renderer render;
 
     private void Start()
     {
         filter = GetComponent<MeshFilter>();
+        render = GetComponent<Renderer>();
 
         GenerateNoise();
     }
 
     private void Update()
     {
-        GenerateNoise();
+        //GenerateNoise();
         offsetX += Time.deltaTime * timeScale;
         offsetY += Time.deltaTime * timeScale;
     }

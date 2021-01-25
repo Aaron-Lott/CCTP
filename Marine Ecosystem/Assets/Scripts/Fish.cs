@@ -18,13 +18,12 @@ public class Fish : Consumer
     protected override void EscapeFromPredator()
     {
         Shoal();
-        moveSpeed = fastMoveSpeed;
     }
 
     protected override void Exploring()
     {
         base.Exploring();
-        Shoal();
+        //Shoal();
     }
 
     protected void Shoal()

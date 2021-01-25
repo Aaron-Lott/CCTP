@@ -8,6 +8,13 @@ public class ConsumerSettings : LivingEntitySettings
     [Tooltip("The gender of this creature.")]
     public Gender gender;
 
+    [Tooltip("The offspring of this creature.")]
+    public Consumer offspringPrefab;
+
+    [Tooltip("The speed at which this creature moves.")]
+    [Range(0.0f, 10.0f)]
+    public float moveSpeed = 2;
+
     [Tooltip("The minimum (X) and maximum (Y) lifespan of this creature.")]
     public Vector2Int lifeSpan;
 
@@ -24,8 +31,15 @@ public class ConsumerSettings : LivingEntitySettings
     public Species[] diet;
 
     [Tooltip("The range at which this creature can sense.")]
-    [Range(1.0f, 10.0f)]
+    [Range(1.0f, 20.0f)]
     public float perceptiveRange = 5;
+
+    [Tooltip("How long it takes for the creature to eat it's food.")]
+    [Range(1, 20)]
+    public int eatDuration = 10;
+
+    [Tooltip("The effect instaniated when mating.")]
+    public GameObject matingEffect;
 
     [Tooltip("A text file used to generate a random female name for this creature.")]
     [SerializeField] private TextAsset femaleNameFile = null;
@@ -56,7 +70,7 @@ public class ConsumerSettings : LivingEntitySettings
 
     public Gender GetRandomGender()
     {
-        return (Gender)Random.Range(1, 2);
+        return (Gender)Random.Range(0, 2);
     }
 
 }
