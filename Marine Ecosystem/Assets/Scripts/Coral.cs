@@ -20,6 +20,8 @@ public class Coral : Producer
     private enum Colors {ORIGINAL, FLUORESCED, DEAD}
     Colors colors = Colors.ORIGINAL;
 
+    public ParticleSystem eatingEffect;
+
     protected override void Init()
     {
         base.Init();
@@ -29,7 +31,24 @@ public class Coral : Producer
         orignalColor = _renderer.material.GetColor("_Color");
 
         //if(DoesFluoresce)
-        StartCoroutine(FluoresceRoutine(FluoresceBlue));
+        //StartCoroutine(FluoresceRoutine(FluoresceBlue));
+    }
+
+    public override float Consume(float amount, Consumer consumer)
+    {
+        eatingEffect.transform.position = consumer.transform.position;
+
+        if(consumer.Hunger > 0.1f)
+        {
+            if (!eatingEffect.isPlaying)
+                eatingEffect.Play();
+        }
+        else
+        {
+            eatingEffect.Stop();
+        }
+
+            return amountRemaining;
     }
 
     protected override void Update()

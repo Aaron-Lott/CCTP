@@ -7,14 +7,14 @@ public class Environment : MonoBehaviour
     public static Environment Instance;
     public int TimeScale { get; } = 60;
 
-    public int WorldMinX { get; } = -60;
-    public int WorldMaxX { get; } = 60;
+    public int WorldMinX { get; } = -50;
+    public int WorldMaxX { get; } = 50;
 
-    public int WorldMinY { get; } = -18;
+    public int WorldMinY { get; } = -15;
     public int WorldMaxY { get; } = -1;
 
-    public int WorldMinZ { get; } = -70;
-    public int WorldMaxZ { get; } = 40;
+    public int WorldMinZ { get; } = -60;
+    public int WorldMaxZ { get; } = 45;
 
     [Range(2010, 2060)]
     public int currentYear = 2021;
@@ -34,6 +34,10 @@ public class Environment : MonoBehaviour
     public float waveForce = 0;
     public float WaveForce { get { return waveForce; } }
 
+    public Dictionary<Species, int> EntityPopulations = new Dictionary<Species, int>();
+
+    public List<GameObject> SpeciesContainers = new List<GameObject>();
+
     private void Awake()
     {
         if (Instance != null)
@@ -44,6 +48,9 @@ public class Environment : MonoBehaviour
         {
             Instance = this;
         }
+
+        InstaniateSpeciesContainers();
+        PopulateEntityPopulationDictionaires();
     }
 
     private void Start()
@@ -86,38 +93,6 @@ public class Environment : MonoBehaviour
         //https://ourworldindata.org/plastic-pollution
 
         millTonnesOfRubbish = Mathf.Max((7.905f * (currentYear - 2018)) + 15.81f, 0f);
-    }
-
-    public void MassInstaniateEntities(GameObject[] corals, int amount, Transform parent, float spacingFactor = 1.0f, float scaleFactor = 0.0f)
-    {
-        for (int i = 0; i < amount; i++)
-        {
-            float sqrRootAmount = Mathf.Sqrt(amount);
-            float spacing = Random.Range(1.0f, spacingFactor);
-            int randCoral = Random.Range(0, corals.Length);
-
-            GameObject newObj = Instantiate(corals[randCoral], parent.position +
-                new Vector3(Random.Range(-sqrRootAmount * spacing, sqrRootAmount * spacing), 0, Random.Range(-sqrRootAmount * spacing, sqrRootAmount * spacing)),
-                Quaternion.Euler(Quaternion.identity.x, Random.Range(-180, 180), Quaternion.identity.z));
-
-            StartCoroutine(PositionOnSeaBed(newObj.transform));
-
-            newObj.transform.localScale = newObj.transform.localScale * Random.Range(1.0f - scaleFactor, 1.0f + scaleFactor);
-
-            newObj.transform.parent = parent;
-        }
-    }
-
-
-    public IEnumerator PositionOnSeaBed(Transform obj)
-    {
-        int layerMask = 1 << 11;
-
-        while (!Physics.Raycast(obj.position, Vector3.down, 10f, layerMask))
-        {
-            obj.transform.position += new Vector3(0, 0.1f, 0);
-            yield return null;
-        }
     }
 
     private IEnumerator WaveRoutine()
@@ -171,6 +146,63 @@ public class Environment : MonoBehaviour
         int randZ = Random.Range(WorldMinZ, WorldMaxZ);
 
         return new Vector3(randX, randY, randZ);
+    }
+
+    private void InstaniateSpeciesContainers()
+    {
+        for(int i = 0; i < System.Enum.GetValues(typeof(Species)).Length; i++)
+        {
+            GameObject container = new GameObject(((Species)i).ToString() + " - Container");
+            SpeciesContainers.Add(container);
+        }
+    }
+
+    public void IncreaseEntityPopulation(Species species)
+    {
+        EntityPopulations[species] = EntityPopulations[species] += 1;
+    }
+
+    public void DecreaseEntityPopulation(Species species)
+    {
+        EntityPopulations[species] = EntityPopulations[species] -= 1;
+    }
+
+    public void PopulateEntityPopulationDictionaires()
+    {
+        foreach(Species species in System.Enum.GetValues(typeof(Species)))
+        {
+            EntityPopulations.Add(species, 0);
+        }
+    }
+
+    public void PopulateSpeciesContainers(LivingEntity entity)
+    {
+        entity.transform.parent = SpeciesContainers[(int)entity.Species].transform;
+    }
+
+    public void AddBoidManagerToFishContainters(Fish fish)
+    {
+        if(!SpeciesContainers[(int)fish.Species].GetComponent<BoidManager>())
+        {
+            SpeciesContainers[(int)fish.Species].AddComponent<BoidManager>();
+        }
+    }
+
+    public int GetEntityPopulation(Species species)
+    {
+        return EntityPopulations[species];
+    }
+
+    public bool IsInsideReef(Transform go)
+    {
+        return go.transform.position.x < WorldMaxX && go.transform.position.y < WorldMaxY &&
+            go.transform.position.x > WorldMinX && go.transform.position.y > WorldMinY &&
+            go.transform.position.z < WorldMaxZ && go.transform.position.z > WorldMinZ;
+    }
+
+    public Vector3 GetReefCenter()
+    {
+        return new Vector3((WorldMinX + WorldMaxX) / 2, (WorldMinY + WorldMaxY) / 2, (WorldMinZ + WorldMaxZ) / 2);
     }
 }
 

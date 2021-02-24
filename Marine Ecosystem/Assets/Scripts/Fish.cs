@@ -4,10 +4,26 @@ using UnityEngine;
 
 public class Fish : Consumer
 {
+
+    protected FishSettings fishSettings;
+
+    public bool DoesSchool { get { return fishSettings.doesSchool; } }
+
+    public float SchoolPerceptiveRange { get { return fishSettings.schoolPerceptiveRange; } }
+
+    private BoidManager boidManager;
+
     protected override void Init()
     {
         base.Init();
-        BoidManager.Instance.allBoids.Add(this);
+
+        fishSettings = (FishSettings)consumerSettings;
+
+        if(DoesSchool)
+        {
+            Environment.Instance.AddBoidManagerToFishContainters(this);
+            boidManager = GetComponentInParent<BoidManager>();
+        }
     }
 
     protected override void Update()
@@ -17,23 +33,39 @@ public class Fish : Consumer
 
     protected override void EscapeFromPredator()
     {
-        Shoal();
-    }
-
-    protected override void Exploring()
-    {
-        base.Exploring();
-        //Shoal();
-    }
-
-    protected void Shoal()
-    {
-        moveDirection += (Cohesion() + Seperation() + Alignment());
+        SchoolBehaviour();
     }
 
     protected override void RemoveFromLists()
     {
-        BoidManager.Instance.allBoids.Remove(this);
+        boidManager.RemoveFishFromSchool(this);
+    }
+
+    protected override void Exploring()
+    {
+        if (DoesSchool)
+        {
+            if(Environment.Instance.IsInsideReef(transform))
+            {
+                if (Random.Range(0, 5) < 1)
+                    SchoolBehaviour();
+            }
+            else
+            {
+                moveDirection = Environment.Instance.GetReefCenter() - transform.position;
+            }
+        }
+        else
+        {
+            base.Exploring();
+        }
+
+    }
+
+    protected void SchoolBehaviour()
+    {
+        moveDirection += (Cohesion() + Seperation() + Alignment());
+        moveTarget = boidManager.GoalPosition - transform.position;
     }
 
     #region Boid Behaviours
@@ -43,11 +75,11 @@ public class Fish : Consumer
         int numNeighbours = 0;
         Vector3 center = Vector3.zero;
 
-        foreach (Fish fish in BoidManager.Instance.allBoids)
+        foreach (Fish fish in boidManager.GetAllFishInSchool())
         {
             if(fish.Species == this.Species)
             {
-                if (Vector3.Distance(transform.position, fish.transform.position) < PerceptiveRange)
+                if (Vector3.Distance(transform.position, fish.transform.position) < SchoolPerceptiveRange)
                 {
                     center += fish.transform.position;
                     numNeighbours++;
@@ -59,7 +91,7 @@ public class Fish : Consumer
         {
             center /= numNeighbours;
 
-             return (center - transform.position).normalized * BoidManager.Instance.boidSettings.cohesionFactor;
+             return (center - transform.position).normalized * boidManager.CohesionFactor;
         }
 
         return Vector3.zero;
@@ -70,18 +102,15 @@ public class Fish : Consumer
         const float minDistance = 1f;
         Vector3 move = Vector3.zero;
 
-        foreach (Fish fish in BoidManager.Instance.allBoids)
+        foreach (Fish fish in boidManager.GetAllFishInSchool())
         {
-            if (fish.Species == this.Species)
+            if (Vector3.Distance(transform.position, fish.transform.position) < minDistance)
             {
-                if (Vector3.Distance(transform.position, fish.transform.position) < minDistance)
-                {
-                    move += transform.position - fish.transform.position;
-                }
+                move += transform.position - fish.transform.position;
             }
         }
 
-        return move.normalized * BoidManager.Instance.boidSettings.seperationFactor;
+        return move.normalized * boidManager.SeperationFactor;
     }
 
     private Vector3 Alignment()
@@ -89,15 +118,12 @@ public class Fish : Consumer
         Vector3 avgVelocity = Vector3.zero;
         float numNeighbours = 0;
 
-        foreach (Fish fish in BoidManager.Instance.allBoids)
+        foreach (Fish fish in boidManager.GetAllFishInSchool())
         {
-            if (fish.Species == this.Species)
+            if (Vector3.Distance(transform.position, fish.transform.position) < SchoolPerceptiveRange)
             {
-                if (Vector3.Distance(transform.position, fish.transform.position) < PerceptiveRange)
-                {
-                    avgVelocity += fish.moveDirection;
-                    numNeighbours++;
-                }
+                avgVelocity += fish.moveDirection;
+                numNeighbours++;
             }
         }
 
@@ -105,7 +131,7 @@ public class Fish : Consumer
         {
             avgVelocity /= numNeighbours;
 
-            return avgVelocity.normalized * BoidManager.Instance.boidSettings.alignmentFactor;
+            return avgVelocity.normalized * boidManager.AlignmentFactor;
         }
 
         return Vector3.zero;

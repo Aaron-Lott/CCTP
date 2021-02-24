@@ -669,7 +669,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orbitCamViewOffset: {x: 0, y: 0, z: 0}
   settings: {fileID: 11400000, guid: c78124422d1a464448aec4e7475a76c8, type: 2}
-  moveDirection: {x: 0, y: 0, z: 0}
+  randomTarget: {x: 0, y: 0, z: 0}
 --- !u!136 &7716969863535274140
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -681,7 +681,7 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.4
-  m_Height: 1.2
+  m_Height: 1.6
   m_Direction: 2
   m_Center: {x: 0, y: 0.2, z: -0.6}
 --- !u!1 &8758671385390316163

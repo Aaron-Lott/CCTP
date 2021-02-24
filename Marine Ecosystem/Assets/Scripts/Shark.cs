@@ -13,10 +13,12 @@ public class Shark : Consumer
             if (CurrentAction == CreatureAction.Foraging)
             {
                 anim.SetBool("isAttacking", true);
+                MoveSpeed = FastMoveSpeed;
             }
             else
             {
                 anim.SetBool("isAttacking", false);
+                MoveSpeed = Random.Range(BaseMoveSpeed * 0.8f, BaseMoveSpeed * 1.2f);
             }
         }
     }

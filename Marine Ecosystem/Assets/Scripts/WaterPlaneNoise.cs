@@ -25,7 +25,7 @@ public class WaterPlaneNoise : MonoBehaviour
 
     private void Update()
     {
-        //GenerateNoise();
+        GenerateNoise();
         offsetX += Time.deltaTime * timeScale;
         offsetY += Time.deltaTime * timeScale;
     }

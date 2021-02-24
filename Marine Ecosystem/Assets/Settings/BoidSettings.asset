@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BoidSettings
   m_EditorClassIdentifier: 
   cohesionFactor: 1
-  seperationFactor: 0.4
-  alignmentFactor: 0.6
+  seperationFactor: 1
+  alignmentFactor: 1

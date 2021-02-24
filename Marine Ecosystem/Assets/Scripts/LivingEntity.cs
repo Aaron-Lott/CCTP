@@ -44,11 +44,17 @@ public class LivingEntity : MonoBehaviour
     {
         anim = GetComponentInChildren<Animator>();
         _renderer = GetComponentInChildren<Renderer>();
+
+        Environment.Instance.IncreaseEntityPopulation(Species);
+        Environment.Instance.PopulateSpeciesContainers(this);
     }
 
     protected virtual void Update()
     {
-        if(SimulatingAge)
+        //if(Species == Species.Parrotfish)
+        //Debug.Log(Environment.Instance.GetEntityPopulation(Species));
+
+        if (SimulatingAge)
         SimulateAge();
 
         SimulateHealth();
@@ -94,7 +100,7 @@ public class LivingEntity : MonoBehaviour
     {
         if (!dead)
         {
-            Debug.Log(cause);
+            Environment.Instance.DecreaseEntityPopulation(Species);
             dead = true;
         }
 
@@ -102,9 +108,12 @@ public class LivingEntity : MonoBehaviour
 
     public bool DisplayInformationPanel()
     {
-        if(CameraController.Instance.DetectEntity() == this)
+        if(CameraController.Instance != null)
         {
-            return true;
+            if (CameraController.Instance.DetectEntity() == this)
+            {
+                return true;
+            }
         }
 
         return false;

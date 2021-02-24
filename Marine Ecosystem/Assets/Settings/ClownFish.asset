@@ -16,14 +16,20 @@ MonoBehaviour:
   scientificSpecies: Amphiprioninae
   fact: They're immune to stings from the sea anemone.
   gender: 1
-  offspringPrefab: {fileID: 0}
   moveSpeed: 3
   lifeSpan: {x: 6, y: 10}
   maturityAge: 2
-  sizeAtBirth: 0.2
-  diet: 
-  perceptiveRange: 5
+  sizeAtBirth: 1
+  offspringPrefab: {fileID: 3897630680204801970, guid: 6a08a55575df8a64fb527510ac4fa9fd,
+    type: 3}
+  offspringCount: {x: 2, y: 4}
+  diet: 07000000
+  perceptiveRange: 20
   eatDuration: 10
-  matingEffect: {fileID: 0}
+  criticalPopulation: 10
+  matingEffect: {fileID: 4858204166782846201, guid: 5e724d09c902d41439cdcb79c21cc2d2,
+    type: 3}
   femaleNameFile: {fileID: 4900000, guid: a72466e7f65d57644af7899f6e8d6b06, type: 3}
   maleNameFile: {fileID: 4900000, guid: 64ac459f06df801429141f257fd33f2f, type: 3}
+  doesSchool: 1
+  schoolPerceptiveRange: 5

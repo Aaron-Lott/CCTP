@@ -94,8 +94,12 @@ public class CameraController : MonoBehaviour
             }
         }
 
+        if (orbitCamEnabled)
+            return selectedEntity;
+
         if (UIManager.Instance != null)
             UIManager.Instance.SetInformationPanelActive(false);
+
 
         return null;
     }

@@ -16,17 +16,21 @@ MonoBehaviour:
   scientificSpecies: Scaridae
   fact: The name "parrotfish" is derived from their fused teeth, which bear close
     resemblance to a bird's beak.m the sea anemone.
-  gender: 2
-  offspringPrefab: {fileID: 5955092515901762832, guid: 3635ef0dc6f155243a10512151fdb7c4,
-    type: 3}
+  gender: 0
   moveSpeed: 2
   lifeSpan: {x: 5, y: 7}
   maturityAge: 3
   sizeAtBirth: 0.2
-  diet: 07000000
-  perceptiveRange: 10
+  offspringPrefab: {fileID: 5955092515901762832, guid: 3635ef0dc6f155243a10512151fdb7c4,
+    type: 3}
+  offspringCount: {x: 2, y: 4}
+  diet: 0700000003000000
+  perceptiveRange: 20
   eatDuration: 10
+  criticalPopulation: 15
   matingEffect: {fileID: 4858204166782846201, guid: 5e724d09c902d41439cdcb79c21cc2d2,
     type: 3}
   femaleNameFile: {fileID: 4900000, guid: a72466e7f65d57644af7899f6e8d6b06, type: 3}
   maleNameFile: {fileID: 4900000, guid: 64ac459f06df801429141f257fd33f2f, type: 3}
+  doesSchool: 1
+  schoolPerceptiveRange: 5

@@ -11,6 +11,12 @@ TextureImporter:
   - first:
       213: -8519022737440003418
     second: menu_buttons_2
+  - first:
+      213: 4196839423909144710
+    second: menu_buttons_3
+  - first:
+      213: -3017887439063203640
+    second: menu_buttons_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -147,9 +153,9 @@ TextureImporter:
       name: menu_buttons_0
       rect:
         serializedVersion: 2
-        x: 18
+        x: 0
         y: 0
-        width: 480
+        width: 570
         height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -168,9 +174,9 @@ TextureImporter:
       name: menu_buttons_1
       rect:
         serializedVersion: 2
-        x: 1338
+        x: 1359
         y: 0
-        width: 560
+        width: 589
         height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -189,12 +195,12 @@ TextureImporter:
       name: menu_buttons_2
       rect:
         serializedVersion: 2
-        x: 590
+        x: 598
         y: 0
-        width: 696
+        width: 733
         height: 256
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -202,6 +208,48 @@ TextureImporter:
       bones: []
       spriteID: 6aaa96db4f956c980800000000000000
       internalID: -8519022737440003418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: menu_buttons_3
+      rect:
+        serializedVersion: 2
+        x: 1982
+        y: 4
+        width: 398
+        height: 248
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 688a571683b2e3a30800000000000000
+      internalID: 4196839423909144710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: menu_buttons_4
+      rect:
+        serializedVersion: 2
+        x: 2414
+        y: 0
+        width: 1350
+        height: 254
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c046861d5f4e16d0800000000000000
+      internalID: -3017887439063203640
       vertices: []
       indices: 
       edges: []

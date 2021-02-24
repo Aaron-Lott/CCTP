@@ -8,9 +8,6 @@ public class ConsumerSettings : LivingEntitySettings
     [Tooltip("The gender of this creature.")]
     public Gender gender;
 
-    [Tooltip("The offspring of this creature.")]
-    public Consumer offspringPrefab;
-
     [Tooltip("The speed at which this creature moves.")]
     [Range(0.0f, 10.0f)]
     public float moveSpeed = 2;
@@ -25,6 +22,12 @@ public class ConsumerSettings : LivingEntitySettings
     [Range(0.0f, 1.0f)]
     public float sizeAtBirth;
 
+    [Tooltip("The offspring of this creature.")]
+    public Consumer offspringPrefab;
+
+    [Tooltip("The minimum (X) and maximum (Y) offspring count of this creature.")]
+    public Vector2Int offspringCount;
+
     [HideInInspector] public Vector3 ScaleAtBirth { get { return new Vector3(sizeAtBirth, sizeAtBirth, sizeAtBirth); } }
 
     [Tooltip("The diet of this creature.")]
@@ -37,6 +40,10 @@ public class ConsumerSettings : LivingEntitySettings
     [Tooltip("How long it takes for the creature to eat it's food.")]
     [Range(1, 20)]
     public int eatDuration = 10;
+
+    [Tooltip("The minimum population of this species before they reproduce.")]
+    [Range(10, 20)]
+    public int criticalPopulation = 10;
 
     [Tooltip("The effect instaniated when mating.")]
     public GameObject matingEffect;
@@ -63,9 +70,14 @@ public class ConsumerSettings : LivingEntitySettings
         return contents[random];
     }
 
-    public float GetLifeSpan()
+    public float GetRandomLifeSpan()
     {
         return Random.Range((float)lifeSpan.x, (float)lifeSpan.y);
+    }
+
+    public float GetRandomOffspringCount()
+    {
+        return Random.Range(offspringCount.x, offspringCount.y + 1);
     }
 
     public Gender GetRandomGender()

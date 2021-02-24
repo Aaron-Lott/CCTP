@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Producer : LivingEntity
 {
-    float amountRemaining = 1;
+    protected float amountRemaining = 1;
 
-    private Vector3 initalScale;
+    protected Vector3 initalScale;
 
     protected override void Init()
     {
@@ -24,13 +24,14 @@ public class Producer : LivingEntity
         UIManager.Instance.UpdateInfoPanelProducer(this);
     }
 
-    public float Consume(float amount)
+    public virtual float Consume(float amount, Consumer consumer)
     {
         amountRemaining -= amount;
 
         transform.localScale = initalScale * Mathf.Min(amountRemaining, 1.0f);
+        health = Mathf.Min(amountRemaining, 1.0f);
 
-        if (amountRemaining <= 0f)
+        if (amountRemaining <= 0.08f)
         {
             Die(CauseOfDeath.Eaten);
             Destroy(gameObject);

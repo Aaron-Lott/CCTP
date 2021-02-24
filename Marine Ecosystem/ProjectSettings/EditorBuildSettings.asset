@@ -4,5 +4,29 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 49a1c4f57ec96704d9b393a3d1b6639b
+  - enabled: 1
+    path: Assets/Scenes/Ecosystem.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Achievements.unity
+    guid: 5d549b146175a7e4e87d1892dc30f48e
+  - enabled: 1
+    path: Assets/Scenes/Achievements1.unity
+    guid: 5871781f05204c742b89c2f3fe3c9fc6
+  - enabled: 1
+    path: Assets/Scenes/Achievements2.unity
+    guid: 5106f8e55d4aa824f917969391423563
+  - enabled: 1
+    path: Assets/Scenes/About.unity
+    guid: 27f729001bc65f6448fee0742c1db7cb
+  - enabled: 1
+    path: Assets/Scenes/Options.unity
+    guid: fc2ef54b308ae9847882d615b0b92596
+  - enabled: 1
+    path: Assets/Scenes/PopulationSelection.unity
+    guid: e41a5cca9d7dcc740b122abd4563571f
   m_configObjects: {}

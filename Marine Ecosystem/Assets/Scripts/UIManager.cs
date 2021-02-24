@@ -7,16 +7,11 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
+    public bool lockCursorOnAwake = true;
+
     //CUSORS
     [HideInInspector] public bool mouseCursorEnabled = false;
     [SerializeField] private Texture2D mouseCursor = null;
-
-    //COLORS
-    private Color pastelBlue = new Color(0.682f, 0.776f, 0.812f);
-    private Color pastelGreen = new Color(0.467f, 0.867f, 0.467f);
-    private Color pastelRed = new Color(1.0f, 0.412f, 0.38f);
-    private Color pastelOrange = new Color(1.0f, 0.720f, 0.278f);
-    private Color pastelYellow = new Color(0.992f, 0.992f, 0.588f);
 
     //INFO PANEL
     [SerializeField] private GameObject informationPanel = null;
@@ -31,6 +26,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider yearSlider = null;
 
     private bool yearUIActive = false;
+
+    //ACHIEVMENT UI
+    [SerializeField] private Text achivementTitle = null, achievementText = null;
+    [SerializeField] private Image medalImage = null, achievementArt = null;
 
     //THERMOMETER
     [SerializeField] private Slider temperatureSlider = null;
@@ -55,6 +54,7 @@ public class UIManager : MonoBehaviour
         Vector2 cursorOffset = new Vector2(mouseCursor.width / 2, mouseCursor.height / 2);
         Cursor.SetCursor(mouseCursor, Vector3.zero, CursorMode.Auto);
 
+        if(lockCursorOnAwake)
         HideAndLockCursor();
     }
 
@@ -110,29 +110,29 @@ public class UIManager : MonoBehaviour
 
         if (consumer.Age >= consumer.MinLifeSpan)
         {
-            ageSliderFill.color = pastelRed;
+            ageSliderFill.color = Colors.PastelRed;
         }
         else
         {
-            ageSliderFill.color = pastelBlue;
+            ageSliderFill.color = Colors.PastelBlue;
         }
 
         if(consumer.Health <= 0.25f)
         {
-            healthSliderFill.color = pastelRed;
+            healthSliderFill.color = Colors.PastelRed;
         }
         else
         {
-            healthSliderFill.color = pastelGreen;
+            healthSliderFill.color = Colors.PastelGreen;
         }
 
         if(consumer.Hunger >= consumer.CriticalHungerPercent)
         {
-            hungerSliderFill.color = pastelRed;
+            hungerSliderFill.color = Colors.PastelRed;
         }
         else
         {
-            hungerSliderFill.color = pastelYellow;
+            hungerSliderFill.color = Colors.PastelYellow;
         }
 
     }
@@ -154,11 +154,11 @@ public class UIManager : MonoBehaviour
 
         if (producer.Health <= 0.25f)
         {
-            healthSliderFill.color = pastelRed;
+            healthSliderFill.color = Colors.PastelRed;
         }
         else
         {
-            healthSliderFill.color = pastelGreen;
+            healthSliderFill.color = Colors.PastelGreen;
         }
     }
 
@@ -179,15 +179,15 @@ public class UIManager : MonoBehaviour
 
         if(currentTemp >= maxTemp - 1)
         {
-            thermometerUI.color = pastelRed;
-            sliderImage.color = pastelRed;
-            temperatureText.color = pastelRed;
+            thermometerUI.color = Colors.PastelRed;
+            sliderImage.color = Colors.PastelRed;
+            temperatureText.color = Colors.PastelRed;
         }
         else if(currentTemp >= maxTemp - 2 && currentTemp < maxTemp - 1)
         {
-            thermometerUI.color = pastelOrange;
-            sliderImage.color = pastelOrange;
-            temperatureText.color = pastelOrange;
+            thermometerUI.color = Colors.PastelOrange;
+            sliderImage.color = Colors.PastelOrange;
+            temperatureText.color = Colors.PastelOrange;
         }
         else
         {
@@ -227,5 +227,14 @@ public class UIManager : MonoBehaviour
     {
         tonnesOfRubbish = Mathf.Round(tonnesOfRubbish * 100f) / 100f;
         rubbishText.text = tonnesOfRubbish + " million tonnes";
+    }
+
+    public void SetAchievementPanel(AchievementSettings settings)
+    {
+        achivementTitle.text = settings.achievementTitle;
+        achievementText.text = settings.achievementText;
+
+        medalImage.sprite = settings.medalImage;
+        achievementArt.sprite = settings.achievementArt;
     }
 }

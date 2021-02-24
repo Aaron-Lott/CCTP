@@ -21,4 +21,15 @@ public class RubbishController : MonoBehaviour
             rubbish.Add(rub);
         }
     }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            foreach (Rubbish r in rubbish)
+            {
+                r.gameObject.SetActive(true);
+            }
+        }
+    }
 }

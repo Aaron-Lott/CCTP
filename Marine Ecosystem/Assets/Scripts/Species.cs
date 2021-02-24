@@ -1,14 +1,25 @@
-﻿public enum Species
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public enum Species
 {
-    ClownFish = 0,
-    MoorishIdol = 1,
-    YellowTang = 2,
-    StaghornCoral = 3,
-    YellowTubeSponge = 4,
-    BlacktipReefShark = 5,
-    Parrotfish = 6,
-    SeaGrass = 7,
-    TableCoral = 8
+    Clownfish,
+    MoorishIdol,
+    YellowTang,
+    StaghornCoral,
+    YellowTubeSponge,
+    BlacktipReefShark,
+    Parrotfish,
+    SeaGrass,
+    TableCoral
+}
+
+public static class SpeciesPopulation 
+{
+    //public static List<Fish> ClownfishPopulation = new List<Fish>();
+    public static List<Fish> ParrotfishPopulation = new List<Fish>();
+    public static Dictionary<Species, int> EntityPopulations = new Dictionary<Species, int>();
 }
 
 

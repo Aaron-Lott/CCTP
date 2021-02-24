@@ -50,13 +50,16 @@ public class OrbitCamera : MonoBehaviour
     {
         distance -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
 
-        if(distance <= minDistance)
+        float min = minDistance + (focus.GetComponent<CapsuleCollider>() ? focus.GetComponent<CapsuleCollider>().height / 3 : 0);
+        float max = maxDistance + (focus.GetComponent<CapsuleCollider>() ? focus.GetComponent<CapsuleCollider>().height : 0);
+
+        if (distance <= min)
         {
-            distance = minDistance;
+            distance = min;
         }
-        else if(distance >= maxDistance)
+        else if(distance >= max)
         {
-            distance = maxDistance;
+            distance = max;
         }
     }
 
