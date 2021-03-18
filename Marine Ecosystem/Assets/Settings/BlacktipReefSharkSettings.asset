@@ -19,13 +19,14 @@ MonoBehaviour:
   moveSpeed: 2
   lifeSpan: {x: 11, y: 15}
   maturityAge: 6
-  sizeAtBirth: 1
+  sizeAtBirth: 0.3
+  hungerDepletionRate: 0.6
   offspringPrefab: {fileID: 1193754991, guid: c7279e22d54801343a4b939b855d3345, type: 3}
   offspringCount: {x: 1, y: 1}
   diet: 06000000010000000000000002000000
   perceptiveRange: 20
   eatDuration: 10
-  criticalPopulation: 10
+  criticalPopulation: 5
   matingEffect: {fileID: 4858204166782846201, guid: 5e724d09c902d41439cdcb79c21cc2d2,
     type: 3}
   femaleNameFile: {fileID: 4900000, guid: a72466e7f65d57644af7899f6e8d6b06, type: 3}

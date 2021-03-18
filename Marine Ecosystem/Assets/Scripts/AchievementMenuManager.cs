@@ -13,7 +13,7 @@ public class AchievementMenuManager : MonoBehaviour
         {
             if(achievementIcons[i] != null)
             {
-                if (GameDataController.Instance.GetAchievementStatus((AchievementTypes)i))
+                if (GameDataController.Instance.AchievementIsUnlocked((AchievementTypes)i))
                 {
                     Unlocked(i);
                 }

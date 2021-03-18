@@ -24,12 +24,25 @@ public class GameDataController : MonoBehaviour
     public void UnlockAchievement(AchievementTypes type)
     {
         if(gameData.AchievementsUnlocked[(int)type] == false)
-        gameData.AchievementsUnlocked[(int)type] = true;
+        {
+            gameData.AchievementCount++;
+            gameData.AchievementsUnlocked[(int)type] = true;
+        }
     }
 
-    public bool GetAchievementStatus(AchievementTypes type)
+    public bool AchievementIsUnlocked(AchievementTypes type)
     {
        return gameData.AchievementsUnlocked[(int)type];
+    }
+
+    public int GetAchievementCount()
+    {
+        return gameData.AchievementCount;
+    }
+
+    public void SetAchievementCount(int amount)
+    {
+        gameData.AchievementCount = amount;
     }
 
     public float GetMasterVolume()
@@ -60,5 +73,15 @@ public class GameDataController : MonoBehaviour
     public void SetMusicIsOn(bool isOn)
     {
         gameData.MusicIsOn = isOn;
+    }
+
+    public bool GetInstructionsEnabled()
+    {
+        return gameData.InstructionsEnabled;
+    }
+
+    public void SetInstructionsEnabled(bool enabled)
+    {
+        gameData.InstructionsEnabled = enabled;
     }
 }

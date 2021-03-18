@@ -16,17 +16,18 @@ MonoBehaviour:
   scientificSpecies: Zebrasoma flavescens
   fact: At night their yellow color fades, and brightens again in the morning.
   gender: 2
-  moveSpeed: 4
+  moveSpeed: 2.5
   lifeSpan: {x: 25, y: 40}
   maturityAge: 7
-  sizeAtBirth: 1
+  sizeAtBirth: 0.3
+  hungerDepletionRate: 0.8
   offspringPrefab: {fileID: 5917569219030572908, guid: aeb40f9cad087ef4796d76fd20c8ef71,
     type: 3}
   offspringCount: {x: 2, y: 4}
   diet: 07000000
   perceptiveRange: 20
   eatDuration: 10
-  criticalPopulation: 10
+  criticalPopulation: 30
   matingEffect: {fileID: 4858204166782846201, guid: 5e724d09c902d41439cdcb79c21cc2d2,
     type: 3}
   femaleNameFile: {fileID: 4900000, guid: a72466e7f65d57644af7899f6e8d6b06, type: 3}

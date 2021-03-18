@@ -9,4 +9,6 @@ public static class Colors
     public static Color PastelRed  { get { return new Color(1.0f, 0.412f, 0.38f); } }
     public static Color PastelOrange  { get { return new Color(1.0f, 0.720f, 0.278f); } }
     public static Color PastelYellow  { get { return new Color(0.992f, 0.992f, 0.588f); } }
+
+    public static Color ChemicalPollution { get { return new Color(0.2196f, 0.3804f, 0.1765f); } }
 }

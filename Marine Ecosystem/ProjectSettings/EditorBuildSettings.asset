@@ -12,13 +12,13 @@ EditorBuildSettings:
     path: Assets/Scenes/Ecosystem.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/Achievements.unity
+    path: Assets/Scenes/StarfishJournal.unity
     guid: 5d549b146175a7e4e87d1892dc30f48e
   - enabled: 1
-    path: Assets/Scenes/Achievements1.unity
+    path: Assets/Scenes/StarfishJournal1.unity
     guid: 5871781f05204c742b89c2f3fe3c9fc6
   - enabled: 1
-    path: Assets/Scenes/Achievements2.unity
+    path: Assets/Scenes/StarfishJournal2.unity
     guid: 5106f8e55d4aa824f917969391423563
   - enabled: 1
     path: Assets/Scenes/About.unity

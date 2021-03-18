@@ -43,7 +43,7 @@ public class PostProcessController : MonoBehaviour
     {
        if(Input.GetKeyDown(KeyCode.Q))
         {
-            colorGrading.mixerBlueOutGreenIn.value = Mathf.Lerp(0, -200, Time.deltaTime);
+            //colorGrading.mixerBlueOutGreenIn.value = Mathf.Lerp(0, -200, Time.deltaTime);
         }
     }
 

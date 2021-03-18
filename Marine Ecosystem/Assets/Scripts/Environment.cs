@@ -5,7 +5,7 @@ using UnityEngine;
 public class Environment : MonoBehaviour
 {
     public static Environment Instance;
-    public int TimeScale { get; } = 60;
+    public int TimeScale { get; } = 15;
 
     public int WorldMinX { get; } = -50;
     public int WorldMaxX { get; } = 50;
@@ -16,14 +16,23 @@ public class Environment : MonoBehaviour
     public int WorldMinZ { get; } = -60;
     public int WorldMaxZ { get; } = 45;
 
+    public float SeaBedPosition { get; } = -22;
+
     [Range(2010, 2060)]
-    public int currentYear = 2021;
+    public float currentYear = 2021;
     private int minYear = 2010, maxYear = 2060;
 
-    private float millTonnesOfRubbish;
+    [Range(1, 2)]
+    private int timeModifier = 1;
 
-    [Range(23f, 40f)]
-    public float seaTemperature = 28f;
+    public float MillTonnesOfRubbish { get; private set; }
+    public float MaxRubbish { get; private set; }
+
+
+    public float ChemicalPollutionLevels { get; private set; }
+
+    [Range(28f, 32f)]
+    private float seaTemperature = 28f;
     private float maxTemperature = 32f, minTemperature = 28f;
 
     public float SeaTemperature { get { return seaTemperature;  } }
@@ -57,11 +66,19 @@ public class Environment : MonoBehaviour
     {
         if(UIManager.Instance != null)
         {
-            UIManager.Instance.SetUpYearSlider(currentYear, minYear, maxYear);
+            UIManager.Instance.SetUpYearSlider((int)currentYear, minYear, maxYear);
             UIManager.Instance.SetUpTempSlider(minTemperature, maxTemperature);
         }
 
+        currentYear = minYear;
+        MaxRubbish = CalculateRubbishForYear(maxYear);
+
         StartCoroutine(WaveRoutine());
+    }
+
+    private float CalculateRubbishForYear(float year)
+    {
+        return Mathf.Max((7.905f * ((int)year - 2018)) + 15.81f, 0);
     }
 
     public Vector3 GetWaterCurrent()
@@ -73,9 +90,9 @@ public class Environment : MonoBehaviour
     {
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.UpdateYear(ref currentYear);
+            UIManager.Instance.UpdateYear((int)currentYear);
             UIManager.Instance.UpdateTemperatureUI(seaTemperature, minTemperature, maxTemperature);
-            UIManager.Instance.UpdatePollutionUI(millTonnesOfRubbish);
+            UIManager.Instance.UpdatePollutionUI(MillTonnesOfRubbish, ChemicalPollutionLevels);
         }
 
         if(seaTemperature > maxTemperature)
@@ -87,12 +104,28 @@ public class Environment : MonoBehaviour
             seaTemperature = minTemperature;
         }
 
-        seaTemperature = (currentYear - 2010) * 0.08f + minTemperature;
+        if(currentYear < maxYear)
+        currentYear += (Time.deltaTime / TimeScale) * timeModifier;
+
+        seaTemperature = (currentYear - minYear) * 0.08f + minTemperature;
+
+        if(currentYear > 2020)
+        ChemicalPollutionLevels = (currentYear - 2020) / (maxYear - 2020);
 
         //using data from:
         //https://ourworldindata.org/plastic-pollution
 
-        millTonnesOfRubbish = Mathf.Max((7.905f * (currentYear - 2018)) + 15.81f, 0f);
+        MillTonnesOfRubbish = CalculateRubbishForYear(currentYear);
+
+        if (MillTonnesOfRubbish >= 100)
+        {
+            StarfishManager.Instance.SpawnStarfish(AchievementTypes.THIS_MILESTONE_IS_GARBAGE, GetRandomTarget());
+        }
+
+        if((int)currentYear == 2025)
+        {
+            StarfishManager.Instance.SpawnStarfish(AchievementTypes.CRUMBLING_AWAY, GetRandomTarget());
+        }
     }
 
     private IEnumerator WaveRoutine()
@@ -146,6 +179,17 @@ public class Environment : MonoBehaviour
         int randZ = Random.Range(WorldMinZ, WorldMaxZ);
 
         return new Vector3(randX, randY, randZ);
+    }
+
+    public IEnumerator PositionOnSeaBed(Transform obj)
+    {
+        int layerMask = 1 << 11;
+
+        while (!Physics.Raycast(obj.position, Vector3.down, 10f, layerMask))
+        {
+            obj.transform.position += new Vector3(0, 0.1f, 0);
+            yield return null;
+        }
     }
 
     private void InstaniateSpeciesContainers()
@@ -203,6 +247,18 @@ public class Environment : MonoBehaviour
     public Vector3 GetReefCenter()
     {
         return new Vector3((WorldMinX + WorldMaxX) / 2, (WorldMinY + WorldMaxY) / 2, (WorldMinZ + WorldMaxZ) / 2);
+    }
+
+    public void ToggleSpeedModifier(bool speed)
+    {
+        if(speed)
+        {
+            timeModifier = 2;
+        }
+        else
+        {
+            timeModifier = 1;
+        }
     }
 }
 

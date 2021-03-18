@@ -25,7 +25,7 @@ public class Consumer : LivingEntity
 
     protected float criticalHungerPercent = 0.7f;
 
-    public float CriticalHungerPercent { get { return criticalHungerPercent;  } }
+    public float CriticalHungerPercent { get { return criticalHungerPercent; } }
 
     protected LivingEntity foodTarget;
 
@@ -37,34 +37,40 @@ public class Consumer : LivingEntity
     protected bool hasMated = false;
     protected bool MateFound { get; set; }
 
-    protected Consumer Offspring { get { return consumerSettings.offspringPrefab;  } }
+    protected Consumer Offspring { get { return consumerSettings.offspringPrefab; } }
 
     public float Hunger { get { return hunger; } }
 
-    public int EatDuration { get { return consumerSettings.eatDuration;  } }
+    public int EatDuration { get { return consumerSettings.eatDuration; } }
 
     public int MaxLifeSpan { get { return consumerSettings.lifeSpan.y; } }
     public int MinLifeSpan { get { return consumerSettings.lifeSpan.x; } }
 
-    protected Species[] Diet {get { return consumerSettings.diet; } }
+    protected Species[] Diet { get { return consumerSettings.diet; } }
 
-    protected float PerceptiveRange { get { return consumerSettings.perceptiveRange;  } }
+    protected float PerceptiveRange { get { return consumerSettings.perceptiveRange; } }
 
     protected int CriticalPopulation { get { return consumerSettings.criticalPopulation; } }
 
-    protected GameObject MatingEffect { get { return consumerSettings.matingEffect;  } }
+    protected GameObject MatingEffect { get { return consumerSettings.matingEffect; } }
 
     public Gender Gender { get; set; }
 
     public string RandomName { get { return entityName; } }
 
+    public bool IsOffspring { get; set; }
+
     protected override void Init()
     {
         base.Init();
-
         consumerSettings = (ConsumerSettings)settings;
 
         lifeSpan = consumerSettings.GetRandomLifeSpan();
+
+        if (!IsOffspring)
+        {
+           SetInitialAgeAndHunger();
+        }
 
         MoveSpeed = Random.Range(BaseMoveSpeed * 0.8f, BaseMoveSpeed * 1.2f);
 
@@ -74,8 +80,6 @@ public class Consumer : LivingEntity
 
         transform.localScale = consumerSettings.ScaleAtBirth;
         StartCoroutine(GrowRoutine());
-
-        SetInitialAgeAndHunger();
 
         SimulatingAge = true;
 
@@ -97,7 +101,7 @@ public class Consumer : LivingEntity
 
         if(Environment.Instance != null)
 
-        hunger += Time.deltaTime * 1 / Environment.Instance.TimeScale;
+        hunger += Time.deltaTime * 0.25f * consumerSettings.hungerDepletionRate / Environment.Instance.TimeScale;
 
         if (hunger >= 1f)
         {
@@ -249,8 +253,9 @@ public class Consumer : LivingEntity
                     }
                     else if (food is Consumer)
                     {
-                        food.transform.parent = transform;
+                        //food.transform.parent = transform;
                         ((Consumer)food).Die(CauseOfDeath.Eaten);
+                        hunger = 0;
                     }
 
                 }
@@ -275,7 +280,7 @@ public class Consumer : LivingEntity
 
             if (entity)
             {
-                if (entity.Species == this.Species && entity.Gender != this.Gender)
+                if (entity.Species == this.Species && entity.Gender != this.Gender && !entity.Dead)
                 {
                     float distanceToTarget = (entity.transform.position - transform.position).sqrMagnitude;
 
@@ -294,7 +299,7 @@ public class Consumer : LivingEntity
 
     protected void Mate(Consumer mate)
     {
-        if (!hasMated)
+        if (!hasMated && mateTarget && !mateTarget.Dead)
         {
             var targetPos = mate.transform.position;
 
@@ -332,8 +337,21 @@ public class Consumer : LivingEntity
 
         for(int i = 0; i < consumerSettings.GetRandomOffspringCount(); i++)
         {
-            Instantiate(Offspring, spawnPos, Quaternion.identity);
+            Consumer offspring = Instantiate(Offspring, spawnPos, Quaternion.identity);
+            offspring.IsOffspring = true;
+
+            if (i % 2 == 0)
+            {
+                offspring.Gender = Gender.Female;
+            }
+            else
+            {
+                offspring.Gender = Gender.Male;
+            }
         }
+
+        if(Environment.Instance.currentYear > 2015)
+        StarfishManager.Instance.SpawnStarfish(AchievementTypes.ODD_OFFSPRING, spawnPos);
 
         var matingPS = MatingEffect.GetComponent<ParticleSystem>();
 
@@ -415,16 +433,14 @@ public class Consumer : LivingEntity
     {
         Vector3 waterSurface = new Vector3(transform.position.x, 0.5f, transform.position.z);
 
+        StartCoroutine(FadeOutRoutine());
+
         while (transform.position.y < waterSurface.y)
         {
 
             transform.position = Vector3.MoveTowards(transform.position, waterSurface, Time.deltaTime * 0.5f);
             yield return null;
         }
-
-        yield return new WaitForSeconds(5f);
-
-        StartCoroutine(FadeOutRoutine());
     }
 
     protected virtual void RemoveFromLists() { }
@@ -457,7 +473,7 @@ public class Consumer : LivingEntity
 
     public override void SimulateHealth()
     {
-        health = (1.0f - (age / MaxLifeSpan) - (hunger / 4));
+        health = (1.0f - (age / (MaxLifeSpan * 4)) - (hunger / 4) - (Environment.Instance.ChemicalPollutionLevels) / 1.25f);
     }
 
     protected override void UpdateInfoPanel()

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Pollution : MonoBehaviour
 {
-    //protected bool active = true;
-
+ 
     void Start()
     {
         Init();

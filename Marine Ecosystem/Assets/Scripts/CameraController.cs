@@ -15,6 +15,8 @@ public class CameraController : MonoBehaviour
     [HideInInspector]
     public bool orbitCamEnabled = false;
 
+    public bool canMove = false;
+
     private void Awake()
     {
         if(Instance == null)
@@ -33,32 +35,57 @@ public class CameraController : MonoBehaviour
         orbitCam = GetComponent<OrbitCamera>();
 
         SetOrbitCamera(false);
+
+        if(GameDataController.Instance != null)
+            if(GameDataController.Instance.GetInstructionsEnabled())
+            {
+                DisableCameraMovement(true);
+            }
     }
 
     private void LateUpdate()
     {
-        if (orbitCamEnabled && (Input.GetButtonDown("Fire2") || selectedEntity.Dead))
+        if(canMove)
         {
-            selectedEntity = null;
+            if (orbitCamEnabled && (Input.GetButtonDown("Fire2") || selectedEntity.Dead))
+            {
+                selectedEntity = null;
 
-            SetOrbitCamera(false);
-            orbitCamEnabled = false;
+                SetOrbitCamera(false);
+                orbitCamEnabled = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space) && !orbitCamEnabled)
+            {
+                UIManager.Instance.ToggleYearUIAndCursor();
+                freeCam.enabled = !UIManager.Instance.YearUIActive();
+            }
+
+            if (Environment.Instance != null)
+                Environment.Instance.KeepInBounds(transform);
         }
-
-        if (Input.GetKeyDown(KeyCode.Tab) && !orbitCamEnabled)
-        {
-            UIManager.Instance.ToggleYearUI();
-            freeCam.enabled = !UIManager.Instance.YearUIActive();
-        }
-
-        if (Environment.Instance != null)
-        Environment.Instance.KeepInBounds(transform);
     }
 
     private void SetOrbitCamera(bool orbitCamActive)
     {
         freeCam.enabled = !orbitCamActive;
         orbitCam.enabled = orbitCamActive;
+    }
+
+    public StarfishCollectable DetectStarfish()
+    {
+        float castDist = orbitCam.maxDistance;
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, transform.forward, out hit, castDist))
+        {
+            StarfishCollectable starfish = hit.transform.GetComponent<StarfishCollectable>();
+
+            return starfish;
+        }
+
+        return null;
     }
 
     public LivingEntity DetectEntity()
@@ -107,5 +134,20 @@ public class CameraController : MonoBehaviour
     public void ActivateFreeCam(bool active)
     {
         freeCam.enabled = active;
+    }
+
+    public void DisableCameraMovement(bool disable)
+    {
+        canMove = !disable;
+        freeCam.enabled = !disable;
+
+        if(disable)
+        {
+            UIManager.Instance.ShowAndUnlockCursor();
+        }
+        else
+        {
+            UIManager.Instance.HideAndLockCursor();
+        }
     }
 }

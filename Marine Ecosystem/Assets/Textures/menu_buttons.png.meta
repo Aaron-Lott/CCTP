@@ -153,9 +153,9 @@ TextureImporter:
       name: menu_buttons_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 92
         y: 0
-        width: 570
+        width: 477
         height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -174,9 +174,9 @@ TextureImporter:
       name: menu_buttons_1
       rect:
         serializedVersion: 2
-        x: 1359
+        x: 1412
         y: 0
-        width: 589
+        width: 551
         height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -195,9 +195,9 @@ TextureImporter:
       name: menu_buttons_2
       rect:
         serializedVersion: 2
-        x: 598
+        x: 660
         y: 0
-        width: 733
+        width: 692
         height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -216,10 +216,10 @@ TextureImporter:
       name: menu_buttons_3
       rect:
         serializedVersion: 2
-        x: 1982
-        y: 4
-        width: 398
-        height: 248
+        x: 2043
+        y: 0
+        width: 360
+        height: 254
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -237,12 +237,12 @@ TextureImporter:
       name: menu_buttons_4
       rect:
         serializedVersion: 2
-        x: 2414
+        x: 2505
         y: 0
-        width: 1350
+        width: 1416
         height: 254
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

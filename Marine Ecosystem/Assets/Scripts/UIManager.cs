@@ -38,6 +38,10 @@ public class UIManager : MonoBehaviour
 
     //POLLUTION     
     [SerializeField] private Text rubbishText = null;
+    [SerializeField] private Image chemicalPollutionUI = null;
+
+    //STARFISH 
+    [SerializeField] private Text starfishCount;
 
 
     private void Awake()
@@ -54,15 +58,16 @@ public class UIManager : MonoBehaviour
         Vector2 cursorOffset = new Vector2(mouseCursor.width / 2, mouseCursor.height / 2);
         Cursor.SetCursor(mouseCursor, Vector3.zero, CursorMode.Auto);
 
-        if(lockCursorOnAwake)
+        if(lockCursorOnAwake && !GameDataController.Instance.GetInstructionsEnabled())
         HideAndLockCursor();
     }
 
-    private void Update()
-    {   
+    private void Start()
+    {
+        UpdateStarfishCount(GameDataController.Instance.GetAchievementCount());
     }
 
-    public void ToggleYearUI()
+    public void ToggleYearUIAndCursor()
     {
         yearUIActive = !yearUIActive;
         yearUIAnim.SetBool("activated", yearUIActive);
@@ -80,6 +85,12 @@ public class UIManager : MonoBehaviour
     public bool YearUIActive()
     {
         return yearUIActive;
+    }
+    
+    public void SetYearUIActive(bool active)
+    {
+        yearUIActive = active;
+        yearUIAnim.SetBool("activated", yearUIActive);
     }
 
     public void SetInformationPanelActive(bool active)
@@ -205,9 +216,10 @@ public class UIManager : MonoBehaviour
         yearSlider.value = currentYear;
     }
 
-    public void UpdateYear(ref int currentYear)
+    public void UpdateYear(int currentYear)
     {
-        currentYear = (int)yearSlider.value;
+        //currentYear = (int)yearSlider.value;
+        yearSlider.value = currentYear;
         yearText.text = currentYear.ToString();
     }
 
@@ -223,10 +235,20 @@ public class UIManager : MonoBehaviour
         Cursor.visible = true;
     }
 
-    public void UpdatePollutionUI(float tonnesOfRubbish)
+    public void UpdatePollutionUI(float tonnesOfRubbish, float chemicalLevels)
     {
         tonnesOfRubbish = Mathf.Round(tonnesOfRubbish * 100f) / 100f;
         rubbishText.text = tonnesOfRubbish + " million tonnes";
+
+        if (chemicalLevels > 0.4f && chemicalLevels < 0.8f)
+        {
+            chemicalPollutionUI.color = Colors.PastelOrange;
+        }
+        else if(chemicalLevels > 0.8f)
+        {
+            chemicalPollutionUI.color = Colors.PastelRed;
+        }
+
     }
 
     public void SetAchievementPanel(AchievementSettings settings)
@@ -236,5 +258,21 @@ public class UIManager : MonoBehaviour
 
         medalImage.sprite = settings.medalImage;
         achievementArt.sprite = settings.achievementArt;
+    }
+
+    public bool IsCursorShownAndUnlocked()
+    {
+        if(Cursor.lockState == CursorLockMode.Locked || !Cursor.visible)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void UpdateStarfishCount(int starfish)
+    {
+        if(starfishCount)
+        starfishCount.text = starfish.ToString();
     }
 }

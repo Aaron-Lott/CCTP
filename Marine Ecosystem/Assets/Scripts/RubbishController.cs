@@ -24,12 +24,16 @@ public class RubbishController : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Q))
+        int amount = (int)((Environment.Instance.MillTonnesOfRubbish / Environment.Instance.MaxRubbish) * maxAmount);
+
+        for(int i = 0; i < rubbish.Count; i++)
         {
-            foreach (Rubbish r in rubbish)
+            if(i < amount)
             {
-                r.gameObject.SetActive(true);
+                if(!rubbish[i].gameObject.activeInHierarchy)
+                rubbish[i].gameObject.SetActive(true);
             }
         }
     }
+
 }

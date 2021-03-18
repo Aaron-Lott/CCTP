@@ -14,24 +14,25 @@ public class Coral : Producer
 
     public Color DeadColor { get { return coralSettings.DeadColor(); } }
 
-    Color orignalColor;
-    private float fluoresceTemp;
+    private Color orignalColor;
+    public Color fluoresceColor;
 
-    private enum Colors {ORIGINAL, FLUORESCED, DEAD}
-    Colors colors = Colors.ORIGINAL;
+    private float fluoresceTemp;
+    private float deadTemp;
 
     public ParticleSystem eatingEffect;
+
+    private bool hasFluoresced = false;
+    private bool hasDied = false;
 
     protected override void Init()
     {
         base.Init();
         coralSettings = (CoralSettings)settings;
 
-        fluoresceTemp = Environment.Instance.SeaTemperature + Random.Range(0.5f, 1f);
+        fluoresceTemp = Environment.Instance.SeaTemperature + Random.Range(2.0f, 2.5f);
+        deadTemp = fluoresceTemp + 1f;
         orignalColor = _renderer.material.GetColor("_Color");
-
-        //if(DoesFluoresce)
-        //StartCoroutine(FluoresceRoutine(FluoresceBlue));
     }
 
     public override float Consume(float amount, Consumer consumer)
@@ -54,37 +55,30 @@ public class Coral : Producer
     protected override void Update()
     {
         base.Update();
-    }
 
-    protected IEnumerator UpdateColor(Color fluorescentColor)
-    {
-        var currentColor = _renderer.material.GetColor("_Color");
-        float currentTemp = Environment.Instance.seaTemperature;
+        if (!DoesFluoresce)
+            return;
 
-        bool routineCalled = false;
-
-        while(!dead)
+        if(Environment.Instance.SeaTemperature >= fluoresceTemp)
         {
-            if(!routineCalled)
+            if(!hasFluoresced)
             {
-                if (currentTemp > fluoresceTemp)
-                {
-                    LerpColor(orignalColor, fluorescentColor);
-                    routineCalled = true;
-                }
-
-                if(currentColor == fluorescentColor && currentTemp < 0)
-                {
-
-                }
+                StarfishManager.Instance.SpawnStarfish(AchievementTypes.FLUORESCING_CORAL, transform.position + new Vector3(0, 4, 0));
+                StartCoroutine(LerpColor(orignalColor, fluoresceColor));
+                hasFluoresced = true;
             }
-                yield return null;
+
+            if(Environment.Instance.SeaTemperature >= deadTemp && !hasDied)
+            {
+                StartCoroutine(LerpColor(fluoresceColor, DeadColor));
+                hasDied = true;
+            }
         }
     }
 
     protected IEnumerator LerpColor(Color start, Color target)
     {
-        float duration = 10f;
+        float duration = Environment.Instance.TimeScale;
         float increment = Time.deltaTime / (duration / 2f);
         float progress = 0f;
 
@@ -92,78 +86,11 @@ public class Coral : Producer
         {
             _renderer.material.SetColor("_Color", Color.Lerp(start, target, progress));
             progress += increment;
+
+            health -= increment / 2f;
+
             yield return null;
         }
         
-    }
-
-    /*protected IEnumerator FluoresceRoutine(Color fluorescentColor)
-    {
-        var orignalColor = _renderer.material.GetColor("_Color");
-
-        Colors color = Colors.ORIGINAL;
-
-        while (!dead)
-        {
-            var currentColor = _renderer.material.GetColor("_Color");
-            float currentTemp = Environment.Instance.seaTemperature;
-
-            if(currentTemp >= fluoresceTemp && color == Colors.ORIGINAL)
-            {
-                LerpColor(orignalColor, fluorescentColor);
-            }
-
-
-            yield return null;
-        }
-    }*/
-
-
-    protected IEnumerator FluoresceRoutine(Color fluorescentColor)
-    {
-        string colorString = "_Color";
-        var startColor = _renderer.material.GetColor(colorString);
-        bool fluoresced = false;
-
-        while (!dead)
-        {
-            float t = Time.deltaTime * 0.5f;
-
-            var currentColor = _renderer.material.GetColor(colorString);
-
-            if (Environment.Instance.SeaTemperature < fluoresceTemp)
-            {
-                //return to original color.
-                if (currentColor != startColor)
-                {
-                    _renderer.material.SetColor(colorString, Color.Lerp(currentColor, startColor, t));
-                }
-                else if(fluoresced)
-                {
-                    fluoresced = false;
-                }
-            }
-            else
-            {
-                //turn to a fluorescent color.
-                if (currentColor != fluorescentColor && !fluoresced)
-                {
-                    _renderer.material.SetColor(colorString, Color.Lerp(currentColor, fluorescentColor, t));
-                }
-                else 
-                {
-                    fluoresced = true;
-                }
-
-                if(fluoresced)
-                {
-                    //turn to dead color.
-                    _renderer.material.SetColor(colorString, Color.Lerp(currentColor, DeadColor, t));
-                }
-
-            }
-
-            yield return null;
-        }
     }
 }

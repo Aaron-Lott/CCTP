@@ -22,6 +22,12 @@ public class ConsumerSettings : LivingEntitySettings
     [Range(0.0f, 1.0f)]
     public float sizeAtBirth;
 
+    [Tooltip("The speed at which this creature's hunger depleats.")]
+    [Range(0.1f, 1.0f)]
+    public float hungerDepletionRate;
+
+
+
     [Tooltip("The offspring of this creature.")]
     public Consumer offspringPrefab;
 
@@ -42,7 +48,7 @@ public class ConsumerSettings : LivingEntitySettings
     public int eatDuration = 10;
 
     [Tooltip("The minimum population of this species before they reproduce.")]
-    [Range(10, 20)]
+    [Range(5, 30)]
     public int criticalPopulation = 10;
 
     [Tooltip("The effect instaniated when mating.")]

@@ -7,6 +7,8 @@ public class GameData
 {
     public bool[] AchievementsUnlocked = new bool[9];
 
+    public int AchievementCount = 0;
+
     [Range(-80, 0)]
     public float MasterVolume = 0f;
 
@@ -14,11 +16,17 @@ public class GameData
 
     [Range(0, 2)]
     public int GraphicsQuality = 2;
+
+    public bool InstructionsEnabled = true;
 }
 
 public enum AchievementTypes
 {
-    FLUORESCING_CORAL = 0,
-    THIS_ACHIEVEMENT_IS_GARBAGE = 1,
-    ITS_NOT_TOO_LATE = 8
+    STARFISH_DETECTIVE = 0,
+    ODD_OFFSPRING = 1,
+    THIS_MILESTONE_IS_GARBAGE = 2,
+    FLUORESCING_CORAL = 4,
+    CRUMBLING_AWAY = 3,
+    ITS_NOT_TOO_LATE = 8,
+
 }

@@ -34,6 +34,8 @@ public class Rubbish : Pollution
             transform.position = new Vector3(transform.position.x, yPos, transform.position.z) + waterCurrent * Time.deltaTime;
 
             transform.Rotate(waterCurrent.z, waterCurrent.y, -waterCurrent.x);
+
+            KeepInBounds();
         }
     }
 
@@ -104,5 +106,27 @@ public class Rubbish : Pollution
         }
 
             StopCoroutine(BuoyancyRoutine());
+    }
+
+
+    private void KeepInBounds()
+    {
+        if(transform.position.x > Environment.Instance.WorldMaxX)
+        {
+            transform.position = new Vector3(Environment.Instance.WorldMinX, transform.position.y, transform.position.z);
+        }
+        else if(transform.position.x < Environment.Instance.WorldMinX)
+        {
+            transform.position = new Vector3(Environment.Instance.WorldMaxX, transform.position.y, transform.position.z);
+        }
+
+        if(transform.position.z > Environment.Instance.WorldMaxZ)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, Environment.Instance.WorldMinZ);
+        }
+        else if(transform.position.z < Environment.Instance.WorldMinZ)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, Environment.Instance.WorldMaxZ);
+        }
     }
 }
