@@ -12,13 +12,13 @@ public enum Species
     BlacktipReefShark,
     Parrotfish,
     SeaGrass,
-    TableCoral
+    TableCoral,
+    Damselfish,
+    Butterflyfish
 }
 
 public static class SpeciesPopulation 
 {
-    //public static List<Fish> ClownfishPopulation = new List<Fish>();
-    public static List<Fish> ParrotfishPopulation = new List<Fish>();
     public static Dictionary<Species, int> EntityPopulations = new Dictionary<Species, int>();
 }
 

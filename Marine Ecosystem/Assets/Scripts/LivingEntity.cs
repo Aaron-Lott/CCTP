@@ -51,9 +51,6 @@ public class LivingEntity : MonoBehaviour
 
     protected virtual void Update()
     {
-        //if(Species == Species.Parrotfish)
-        //Debug.Log(Environment.Instance.GetEntityPopulation(Species));
-
         if (SimulatingAge)
         SimulateAge();
 

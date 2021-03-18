@@ -1131,6 +1131,8 @@ MonoBehaviour:
   thermometerUI: {fileID: 0}
   temperatureText: {fileID: 0}
   rubbishText: {fileID: 0}
+  chemicalPollutionUI: {fileID: 0}
+  starfishCount: {fileID: 0}
 --- !u!114 &374754783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3292,6 +3294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameData:
     AchievementsUnlocked: 000000000000000000
+    AchievementCount: 0
     MasterVolume: 0
     MusicIsOn: 1
     GraphicsQuality: 2

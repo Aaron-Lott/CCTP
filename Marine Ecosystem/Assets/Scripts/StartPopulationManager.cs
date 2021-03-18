@@ -10,7 +10,7 @@ public class StartPopulationManager : MonoBehaviour
     public void SetStartPopulationValues()
     {
         StartPopulationValues.Clownfish = fishSliders[0].count;
-        StartPopulationValues.Angelfish = fishSliders[1].count;
+        StartPopulationValues.Butterflyfish = fishSliders[1].count;
         StartPopulationValues.YellowTang = fishSliders[2].count;
         StartPopulationValues.Parrotfish = fishSliders[3].count;
         StartPopulationValues.BlacktipReefShark = fishSliders[4].count;

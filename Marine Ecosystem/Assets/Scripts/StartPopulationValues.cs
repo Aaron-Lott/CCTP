@@ -6,7 +6,7 @@ public static class StartPopulationValues
 {
     //fish.
     public static int Clownfish { get; set; }
-    public static int Angelfish { get; set; }
+    public static int Butterflyfish { get; set; }
     public static int YellowTang { get; set; }
     public static int Parrotfish { get; set; }
     public static int BlacktipReefShark { get; set; }

@@ -37,16 +37,24 @@ public class Coral : Producer
 
     public override float Consume(float amount, Consumer consumer)
     {
-        eatingEffect.transform.position = consumer.transform.position;
+        if(eatingEffect)
+        {
+            eatingEffect.transform.position = consumer.transform.position;
 
-        if(consumer.Hunger > 0.1f)
-        {
-            if (!eatingEffect.isPlaying)
-                eatingEffect.Play();
-        }
-        else
-        {
-            eatingEffect.Stop();
+            if (consumer.Hunger > 0.1f)
+            {
+                if (!eatingEffect.isPlaying)
+                    eatingEffect.Play();
+            }
+            else
+            {
+                eatingEffect.Stop();
+            }
+
+            if (!consumer)
+            {
+                eatingEffect.Stop();
+            }
         }
 
             return amountRemaining;

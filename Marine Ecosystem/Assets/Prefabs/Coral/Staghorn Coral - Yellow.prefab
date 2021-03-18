@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c95a397d369174d8f39043315ac768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orbitCamViewOffset: {x: 0, y: 0, z: 0}
+  orbitCamViewOffset: {x: 0, y: 1, z: 0}
   settings: {fileID: 11400000, guid: 4e660a3b6ea1b9f45af7e1e2ba1812a5, type: 2}
   fluoresceColor: {r: 0.99607843, g: 0.99607843, b: 0.023529412, a: 0}
   eatingEffect: {fileID: 3385966168719745591}

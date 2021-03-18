@@ -19,11 +19,15 @@ public class OrbitCamera : MonoBehaviour
     [SerializeField, Range(1f, 4f)]
     private float zoomSpeed = 2f;
 
-    Vector2 orbitAngles = new Vector2(45f, 0f);
+    private Vector2 orbitAngles = new Vector2(45f, 0f);
+
+    private Vector3 offsetFromEntity;
+
+
 
     private void LateUpdate()
     {
-        Vector3 focusPoint = focus.position;
+        Vector3 focusPoint = focus.position + offsetFromEntity;
         Quaternion lookRotation = Quaternion.Euler(orbitAngles);
         Vector3 lookDirection = lookRotation * Vector3.forward;
         Vector3 lookPosition = focusPoint - lookDirection * distance;
@@ -67,7 +71,8 @@ public class OrbitCamera : MonoBehaviour
 
     public void SetFocus(Transform f, Vector3 offset)
     {
-        focus = f;      
+        focus = f;
+        offsetFromEntity = offset;
     }
 
 }
