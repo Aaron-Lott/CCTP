@@ -390,7 +390,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Fluorescing Coral
+  m_Text: Coral Bleaching
 --- !u!222 &125317373
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -651,6 +651,8 @@ MonoBehaviour:
   thermometerUI: {fileID: 0}
   temperatureText: {fileID: 0}
   rubbishText: {fileID: 0}
+  chemicalPollutionUI: {fileID: 0}
+  starfishCount: {fileID: 0}
 --- !u!114 &267876349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1249,7 +1251,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 10bf48ef695413841b74ebca8d9c744d, type: 3}
-    m_FontSize: 24
+    m_FontSize: 21
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -1260,9 +1262,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Doesn't it look beautiful? Well actually, corals glow because of fluorescent
-    proteins that act as sunblock, protecting the endangered species from the sun\u2019s
-    intense rays. "
+  m_Text: As the temperature increases so does the risk of coral bleaching. Mass
+    coral bleaching can be devastating it has potential to wipe out an entire ecosystem.
+    Creatures around the reef will no longer be able to find food, so they move away
+    and often die.
 --- !u!222 &426964809
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1702,7 +1705,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &665521505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4597,9 +4600,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Doesn't it look beautiful? Well actually, corals glow because of fluorescent
-    proteins that act as sunblock, protecting the endangered species from the sun\u2019s
-    intense rays. "
+  m_Text: 'Although this reef has been seriously harmed, many are still healthy in
+    the real world and will continue to be if we all work together to take action
+    in protecting our oceans. '
 --- !u!222 &1579602474
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4770,7 +4773,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1633740929
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4819,7 +4822,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 37f98355ce8f24f4aa8539b8a4c3f45f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 705208c9831aee847b551aa37c471aa5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5810,6 +5813,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameData:
     AchievementsUnlocked: 000000000000000000
+    AchievementCount: 0
     MasterVolume: 0
     MusicIsOn: 1
     GraphicsQuality: 2

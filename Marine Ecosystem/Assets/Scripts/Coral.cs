@@ -71,15 +71,27 @@ public class Coral : Producer
         {
             if(!hasFluoresced)
             {
-                StarfishManager.Instance.SpawnStarfish(AchievementTypes.FLUORESCING_CORAL, transform.position + new Vector3(0, 4, 0));
+                if (Species == Species.StaghornCoral)
+                {
+                    StarfishManager.Instance.SpawnStarfish(AchievementTypes.FLUORESCING_CORAL, transform.position + new Vector3(0, 4, 0));
+                }
+
                 StartCoroutine(LerpColor(orignalColor, fluoresceColor));
                 hasFluoresced = true;
             }
 
             if(Environment.Instance.SeaTemperature >= deadTemp && !hasDied)
             {
-                StartCoroutine(LerpColor(fluoresceColor, DeadColor));
-                hasDied = true;
+                if(!hasDied)
+                {
+                    if (Species == Species.StaghornCoral)
+                    {
+                        StarfishManager.Instance.SpawnStarfish(AchievementTypes.CORAL_BLEACHING, transform.position + new Vector3(0, 4, 0));
+                    }
+
+                    StartCoroutine(LerpColor(fluoresceColor, DeadColor));
+                    hasDied = true;
+                }
             }
         }
     }

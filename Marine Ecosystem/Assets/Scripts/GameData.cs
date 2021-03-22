@@ -27,6 +27,7 @@ public enum AchievementTypes
     THIS_MILESTONE_IS_GARBAGE = 2,
     FLUORESCING_CORAL = 4,
     CRUMBLING_AWAY = 3,
+    CORAL_BLEACHING = 7,
     ITS_NOT_TOO_LATE = 8,
 
 }
