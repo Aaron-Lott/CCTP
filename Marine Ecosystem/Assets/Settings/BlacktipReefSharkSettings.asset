@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a13c397de3eb82544afa2f484c7a2e30, type: 3}
+  m_Name: BlacktipReefSharkSettings
+  m_EditorClassIdentifier: 
+  species: 5
+  scientificSpecies: Carcharhinus melanopterus
+  fact: It gets its name from the prominent black tips on its fins.
+  gender: 1
+  moveSpeed: 2
+  lifeSpan: {x: 11, y: 15}
+  maturityAge: 6
+  sizeAtBirth: 0.3
+  hungerDepletionRate: 0.6
+  offspringPrefab: {fileID: 1193754991, guid: c7279e22d54801343a4b939b855d3345, type: 3}
+  offspringCount: {x: 1, y: 1}
+  diet: 0600000001000000000000000200000009000000
+  perceptiveRange: 20
+  eatDuration: 5
+  criticalPopulation: 5
+  matingEffect: {fileID: 4858204166782846201, guid: 5e724d09c902d41439cdcb79c21cc2d2,
+    type: 3}
+  femaleNameFile: {fileID: 4900000, guid: a72466e7f65d57644af7899f6e8d6b06, type: 3}
+  maleNameFile: {fileID: 4900000, guid: 64ac459f06df801429141f257fd33f2f, type: 3}

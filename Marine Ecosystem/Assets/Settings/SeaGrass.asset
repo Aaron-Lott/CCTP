@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 970400cd90f54164ba2e5f896badb4ec, type: 3}
+  m_Name: SeaGrass
+  m_EditorClassIdentifier: 
+  species: 7
+  scientificSpecies: Hydrocharitaceae
+  fact: ' A single acre alone can support over a million species.'
+  material: {fileID: 2100000, guid: 74fa4874a926a414b9edc7beef60fc84, type: 2}
