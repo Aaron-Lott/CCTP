@@ -122,9 +122,19 @@ public class Environment : MonoBehaviour
             StarfishManager.Instance.SpawnStarfish(AchievementTypes.THIS_MILESTONE_IS_GARBAGE, GetRandomTarget());
         }
 
-        if((int)currentYear == 2025)
+        if (MillTonnesOfRubbish >= 200)
         {
-            StarfishManager.Instance.SpawnStarfish(AchievementTypes.CRUMBLING_AWAY, GetRandomTarget());
+            StarfishManager.Instance.SpawnStarfish(AchievementTypes.PLASTIC_GALAXY, GetRandomTarget());
+        }
+
+        if ((int)currentYear == maxYear)
+        {
+            UIManager.Instance.SetFinalMessage();
+            StarfishManager.Instance.SpawnStarfish(AchievementTypes.ITS_NOT_TOO_LATE, GetRandomTarget());
+        }
+        else if((int)currentYear == 2048)
+        {
+            StarfishManager.Instance.SpawnStarfish(AchievementTypes.TWENTY_FOURTY_EIGHT, GetRandomTarget());
         }
     }
 

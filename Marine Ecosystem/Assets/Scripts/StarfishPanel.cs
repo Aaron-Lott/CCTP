@@ -10,6 +10,4 @@ public class StarfishPanel : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
-
-
 }

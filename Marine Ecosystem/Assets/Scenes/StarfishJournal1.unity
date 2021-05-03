@@ -1701,7 +1701,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &665521505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1721,7 +1721,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b73784ebdeab12c4e86eb0fa26984821, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b3ce4654daa199c46af2a7a695340bb2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3951,7 +3951,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Crumbling Away
+  m_Text: 2048
 --- !u!222 &1355783854
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4728,8 +4728,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'As sea ice is melted the global sea level rises. Resulting in more frequent
-    and devistating costal erosion.  '
+  m_Text: If we continue to overfish, scientists predict that by the 2048 there will
+    be no fish left in our oceans.
 --- !u!222 &1579602474
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -104,7 +104,11 @@ public class Coral : Producer
 
         while (progress < 1f)
         {
-            _renderer.material.SetColor("_Color", Color.Lerp(start, target, progress));
+            foreach(Material mat in _renderer.materials)
+            {
+                mat.SetColor("_Color", Color.Lerp(start, target, progress));
+            }
+
             progress += increment;
 
             health -= increment / 2f;

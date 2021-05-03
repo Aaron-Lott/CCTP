@@ -17,10 +17,10 @@ MonoBehaviour:
   fact: They have a very long, white dorsal fin.
   gender: 1
   moveSpeed: 2.5
-  lifeSpan: {x: 5, y: 7}
-  maturityAge: 2
+  lifeSpan: {x: 5, y: 6}
+  maturityAge: 3
   sizeAtBirth: 0.3
-  hungerDepletionRate: 0.5
+  hungerDepletionRate: 0.7
   offspringPrefab: {fileID: 4358327559812087485, guid: 61219f158a660694ca49fb4790422026,
     type: 3}
   offspringCount: {x: 2, y: 4}

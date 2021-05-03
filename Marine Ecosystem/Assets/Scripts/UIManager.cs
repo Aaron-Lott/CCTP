@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -43,6 +44,8 @@ public class UIManager : MonoBehaviour
     //STARFISH 
     [SerializeField] private Text starfishCount;
 
+    [SerializeField] private Text finalMessage;
+
 
     private void Awake()
     {
@@ -58,8 +61,13 @@ public class UIManager : MonoBehaviour
         Vector2 cursorOffset = new Vector2(mouseCursor.width / 2, mouseCursor.height / 2);
         Cursor.SetCursor(mouseCursor, Vector3.zero, CursorMode.Auto);
 
-        if(lockCursorOnAwake && !GameDataController.Instance.GetInstructionsEnabled())
+        if(lockCursorOnAwake)
         HideAndLockCursor();
+
+        if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MainMenu"))
+        {
+            ShowAndUnlockCursor();
+        }
     }
 
     private void Start()
@@ -273,6 +281,12 @@ public class UIManager : MonoBehaviour
     public void UpdateStarfishCount(int starfish)
     {
         if(starfishCount)
-        starfishCount.text = starfish.ToString();
+        starfishCount.text = starfish.ToString() + "/9";
+    }
+
+    public void SetFinalMessage()
+    {
+        if(finalMessage)
+        finalMessage.text = "Well done for finding the final starfish. You answered " + StarfishManager.Instance.correctAnswers + "/7 questions correctly! Although this reef has been seriously harmed, many are still healthy in the real world and will continue to be if we all work together to take action in protecting our oceans.";
     }
 }

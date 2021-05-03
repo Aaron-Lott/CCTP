@@ -15,7 +15,7 @@ public class FishSpawner : MonoBehaviour
         SpawnFish(blacktipReefShark, StartPopulationValues.BlacktipReefShark);
         SpawnFish(moorishIdol, StartPopulationValues.MoorishIdol);
         SpawnFish(damselfish, StartPopulationValues.Damselfish);
-        //SpawnFish(whitetipReefShark, StartPopulationValues.WhitetipReefShark);
+        SpawnFish(whitetipReefShark, StartPopulationValues.WhitetipReefShark);
     }
 
     public void SpawnFish(Consumer fishPrefab, int population)

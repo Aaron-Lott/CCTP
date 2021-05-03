@@ -8,6 +8,8 @@ public class StarfishManager : MonoBehaviour
 
     public StarfishCollectable[] starfishCollectables;
 
+    [HideInInspector] public int correctAnswers = 0;
+
     private Dictionary<AchievementTypes, bool> starfishSpawned = new Dictionary<AchievementTypes, bool>();
 
     private void Awake()
@@ -40,5 +42,10 @@ public class StarfishManager : MonoBehaviour
             Debug.Log(type + ": " + position);
             starfishSpawned[type] = true;
         }
+    }
+
+    public void CorrectAnswer()
+    {
+        correctAnswers++;
     }
 }

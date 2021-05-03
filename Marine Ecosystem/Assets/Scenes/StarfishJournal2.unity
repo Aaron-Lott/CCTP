@@ -2237,9 +2237,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Doesn't it look beautiful? Well actually, corals glow because of fluorescent
-    proteins that act as sunblock, protecting the endangered species from the sun\u2019s
-    intense rays. "
+  m_Text: As plastics enter our oceans they slowly break down in tiny peices called
+    'microplastics'. There's currently more microplastics in our oceans than there
+    are stars in our galaxy!
 --- !u!222 &972977017
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4747,7 +4747,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Fluorescing Coral
+  m_Text: Plastic Galaxy
 --- !u!222 &1615668864
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6178,7 +6178,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2132768446
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6219,7 +6219,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 37f98355ce8f24f4aa8539b8a4c3f45f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4c270262c48ea9d40a91632a46147eb9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -37,10 +37,8 @@ public class CameraController : MonoBehaviour
         SetOrbitCamera(false);
 
         if(GameDataController.Instance != null)
-            if(GameDataController.Instance.GetInstructionsEnabled())
-            {
-                DisableCameraMovement(true);
-            }
+            DisableCameraMovement(true);
+
     }
 
     private void LateUpdate()

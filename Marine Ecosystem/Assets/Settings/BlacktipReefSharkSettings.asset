@@ -25,7 +25,7 @@ MonoBehaviour:
   offspringCount: {x: 1, y: 1}
   diet: 0600000001000000000000000200000009000000
   perceptiveRange: 20
-  eatDuration: 10
+  eatDuration: 5
   criticalPopulation: 5
   matingEffect: {fileID: 4858204166782846201, guid: 5e724d09c902d41439cdcb79c21cc2d2,
     type: 3}

@@ -14,7 +14,8 @@ public enum Species
     SeaGrass,
     TableCoral,
     Damselfish,
-    Butterflyfish
+    Butterflyfish,
+    WhitetipReefShark
 }
 
 public static class SpeciesPopulation 

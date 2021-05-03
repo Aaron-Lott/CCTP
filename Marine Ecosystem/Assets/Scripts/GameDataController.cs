@@ -75,13 +75,42 @@ public class GameDataController : MonoBehaviour
         gameData.MusicIsOn = isOn;
     }
 
-    public bool GetInstructionsEnabled()
+    public void UnlockWhitetipReefShark()
     {
-        return gameData.InstructionsEnabled;
+        if (gameData.WhitetipReefSharkUnlocked == false)
+        {
+            gameData.WhitetipReefSharkUnlocked = true;
+        }
     }
 
-    public void SetInstructionsEnabled(bool enabled)
+    public bool WhitetipReefSharkIsUnlocked()
     {
-        gameData.InstructionsEnabled = enabled;
+        return gameData.WhitetipReefSharkUnlocked;
+    }
+
+    public void UnlockMoorishIdol()
+    {
+        if (gameData.MoorishIdolUnlocked == false)
+        {
+            gameData.MoorishIdolUnlocked = true;
+        }
+    }
+
+    public bool MoorishIdolIsUnlocked()
+    {
+        return gameData.MoorishIdolUnlocked;
+    }
+
+    public void UnlockButterflyFish()
+    {
+        if (gameData.ButterflyFishUnlocked == false)
+        {
+            gameData.ButterflyFishUnlocked = true;
+        }
+    }
+
+    public bool ButterflyFishIsUnlocked()
+    {
+        return gameData.ButterflyFishUnlocked;
     }
 }

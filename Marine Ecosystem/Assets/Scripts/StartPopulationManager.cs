@@ -1,11 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StartPopulationManager : MonoBehaviour
 {
     public StartPopulationSlider[] fishSliders;
     public StartPopulationSlider[] coralSliders;
+
+    public GameDataController gameDataController;
+
+    public Image[] lockImages;
+    public Image[] lockedSpeciesImages;
+
+    private void Start()
+    {
+        if(gameDataController.GetAchievementCount() >= 3)
+        {
+            SetUIUnlocked(0);
+            gameDataController.UnlockMoorishIdol();
+        }
+
+        if(gameDataController.GetAchievementCount() >= 6)
+        {
+            SetUIUnlocked(1);
+            gameDataController.UnlockButterflyFish();
+        }
+
+        if(gameDataController.GetAchievementCount() >= 9)
+        {
+            SetUIUnlocked(2);
+            gameDataController.UnlockWhitetipReefShark();
+        }
+    }
 
     public void SetStartPopulationValues()
     {
@@ -21,5 +48,11 @@ public class StartPopulationManager : MonoBehaviour
         StartPopulationValues.StaghornCoralColony = coralSliders[0].count;
         StartPopulationValues.TableCoralColony = coralSliders[1].count;
         StartPopulationValues.YellowSpongeTubeColony = coralSliders[2].count;
+    }
+
+    public void SetUIUnlocked(int index)
+    {
+        lockImages[index].gameObject.SetActive(false);
+        lockedSpeciesImages[index].color = Color.white;
     }
 }

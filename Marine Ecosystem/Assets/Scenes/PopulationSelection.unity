@@ -837,6 +837,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1982662368}
+  - {fileID: 2134359531}
   m_Father: {fileID: 370329829}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -900,7 +901,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1282765757}
-          m_MethodName: SetLabelActive
+          m_MethodName: SetLabelActiveMoorishIdol
           m_Mode: 5
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1695,6 +1696,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 0
+  isUnlocked: 1
+  isMoorishIdolSlider: 0
+  isButterflyFishSlider: 0
+  isWhitetipReefSharkSlider: 0
 --- !u!114 &263609468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2172,7 +2177,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 30
+  m_Text: 0
 --- !u!222 &303364529
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2881,6 +2886,7 @@ MonoBehaviour:
   rubbishText: {fileID: 0}
   chemicalPollutionUI: {fileID: 0}
   starfishCount: {fileID: 0}
+  finalMessage: {fileID: 0}
 --- !u!114 &374754783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2989,6 +2995,15 @@ MonoBehaviour:
   - {fileID: 592743794}
   - {fileID: 1743019885}
   - {fileID: 522896978}
+  gameDataController: {fileID: 1107266216}
+  lockImages:
+  - {fileID: 2134359533}
+  - {fileID: 842405746}
+  - {fileID: 1867189336}
+  lockedSpeciesImages:
+  - {fileID: 1982662370}
+  - {fileID: 1961645660}
+  - {fileID: 1776040988}
 --- !u!114 &374754788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3249,7 +3264,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 30
+  m_Text: 0
 --- !u!222 &439199487
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3908,6 +3923,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 0
+  isUnlocked: 1
+  isMoorishIdolSlider: 0
+  isButterflyFishSlider: 0
+  isWhitetipReefSharkSlider: 0
 --- !u!1 &534573927
 GameObject:
   m_ObjectHideFlags: 0
@@ -4818,6 +4837,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 0
+  isUnlocked: 1
+  isMoorishIdolSlider: 0
+  isButterflyFishSlider: 0
+  isWhitetipReefSharkSlider: 0
 --- !u!1 &595317961
 GameObject:
   m_ObjectHideFlags: 0
@@ -5307,6 +5330,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 0
+  isUnlocked: 1
+  isMoorishIdolSlider: 0
+  isButterflyFishSlider: 0
+  isWhitetipReefSharkSlider: 0
 --- !u!114 &710137703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5920,6 +5947,93 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 60, y: 90, z: 90.00001}
+--- !u!1 &842405743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 842405744}
+  - component: {fileID: 842405747}
+  - component: {fileID: 842405746}
+  - component: {fileID: 842405745}
+  m_Layer: 5
+  m_Name: Lock
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &842405744
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842405743}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1334330981}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 40, y: 40}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &842405745
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842405743}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &842405746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842405743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0.4117647, b: 0.38039216, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 2ffc58d08940c014bb2529bc3a1016d2, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &842405747
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842405743}
+  m_CullTransparentMesh: 0
 --- !u!1 &876080242
 GameObject:
   m_ObjectHideFlags: 0
@@ -6280,6 +6394,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 0
+  isUnlocked: 0
+  isMoorishIdolSlider: 0
+  isButterflyFishSlider: 1
+  isWhitetipReefSharkSlider: 0
 --- !u!1 &956956783
 GameObject:
   m_ObjectHideFlags: 0
@@ -6534,7 +6652,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 4
+  m_Text: 0
 --- !u!222 &991276593
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7540,6 +7658,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 0
+  isUnlocked: 1
+  isMoorishIdolSlider: 0
+  isButterflyFishSlider: 0
+  isWhitetipReefSharkSlider: 0
 --- !u!114 &1093409120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7662,7 +7784,9 @@ MonoBehaviour:
     MasterVolume: 0
     MusicIsOn: 1
     GraphicsQuality: 2
-    InstructionsEnabled: 1
+    ButterflyFishUnlocked: 0
+    MoorishIdolUnlocked: 0
+    WhitetipReefSharkUnlocked: 0
 --- !u!114 &1107266217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8566,6 +8690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 374754785}
+  gameDataController: {fileID: 1107266216}
 --- !u!114 &1282765758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8802,6 +8927,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1961645658}
+  - {fileID: 842405744}
   m_Father: {fileID: 370329829}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8865,7 +8991,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1282765757}
-          m_MethodName: SetLabelActive
+          m_MethodName: SetLabelActiveButterflyFish
           m_Mode: 5
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -8944,6 +9070,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 0
+  isUnlocked: 0
+  isMoorishIdolSlider: 0
+  isButterflyFishSlider: 0
+  isWhitetipReefSharkSlider: 1
 --- !u!114 &1344842312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9084,6 +9214,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 0
+  isUnlocked: 1
+  isMoorishIdolSlider: 0
+  isButterflyFishSlider: 0
+  isWhitetipReefSharkSlider: 0
 --- !u!114 &1368367733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9969,6 +10103,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 0
+  isUnlocked: 1
+  isMoorishIdolSlider: 0
+  isButterflyFishSlider: 0
+  isWhitetipReefSharkSlider: 0
 --- !u!114 &1562545612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10437,7 +10575,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1282765757}
-          m_MethodName: SetLabelActive
+          m_MethodName: SetLabelActiveWhitetipReefShark
           m_Mode: 5
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -10516,6 +10654,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 0
+  isUnlocked: 0
+  isMoorishIdolSlider: 1
+  isButterflyFishSlider: 0
+  isWhitetipReefSharkSlider: 0
 --- !u!114 &1703351425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10780,6 +10922,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 0
+  isUnlocked: 1
+  isMoorishIdolSlider: 0
+  isButterflyFishSlider: 0
+  isWhitetipReefSharkSlider: 0
 --- !u!1001 &1749319888
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11010,7 +11156,7 @@ RectTransform:
   m_GameObject: {fileID: 1776040985}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1692213911}
   m_RootOrder: 0
@@ -11422,7 +11568,7 @@ GameObject:
   - component: {fileID: 1867189336}
   - component: {fileID: 1867189335}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Lock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12077,7 +12223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -12376,7 +12522,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -12916,6 +13062,93 @@ Transform:
   m_Father: {fileID: 472287891}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 11.479, z: 0}
+--- !u!1 &2134359530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2134359531}
+  - component: {fileID: 2134359534}
+  - component: {fileID: 2134359533}
+  - component: {fileID: 2134359532}
+  m_Layer: 5
+  m_Name: Lock
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2134359531
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134359530}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 52397627}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 40, y: 40}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &2134359532
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134359530}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &2134359533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134359530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0.4117647, b: 0.38039216, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 2ffc58d08940c014bb2529bc3a1016d2, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &2134359534
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134359530}
+  m_CullTransparentMesh: 0
 --- !u!1 &2143916835
 GameObject:
   m_ObjectHideFlags: 0
